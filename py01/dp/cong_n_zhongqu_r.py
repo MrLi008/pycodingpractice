@@ -10,8 +10,8 @@ u'从n中取r个元素
 '''
 import numpy as np
 
-max_n = 10
-max_r = 6
+max_n = 20
+max_r = 9
 result = np.zeros((max_n+1, max_r+1))
 
 
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     print result.astype(dtype=np.int)
     result = init_result(max_n+1, max_r+1)
     takefrom_not_recursion(max_n+1, max_r+1, result)
-    print result
+    print result.astype(dtype=np.int)
 
 
 
