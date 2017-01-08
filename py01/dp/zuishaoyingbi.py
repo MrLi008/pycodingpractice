@@ -41,15 +41,15 @@ def solve_not_recursion(total_money, array_money, result):
         result[i,0] = 0
         j=1
         while j <= total_money:
-            result[i, j] = result[i-1, j]
+            result[i, j] = result[i+1, j]
             if j >= array_money[i]:
                 result[i, j] = min(result[i, j-array_money[i]] + 1,
                                    result[i + 1, j])
             j += 1
         print result
-        i += 1
 
-    return result[i-1, total_money]
+
+    return result[i, total_money]
 
 
 def find_true_from_list(l):
@@ -81,8 +81,8 @@ def solve_my(values, total_money, result):
 
 
 if __name__ == '__main__':
-    value = [ 1,2, 5]
-    total_money = 130
+    value = [ 2, 5]
+    total_money = 7
     result = np.zeros((len(value)+1, total_money+1), dtype=np.int)
     print u'金币的个数: ', solve(0, total_money, value, result)
     print result
