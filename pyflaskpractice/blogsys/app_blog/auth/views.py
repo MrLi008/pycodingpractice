@@ -1,12 +1,10 @@
 # coding=utf8
 
 from flask import render_template, redirect, request, url_for, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from . import auth
-from ..models import User
 from .. import db
 from .forms import *
-from flask_login import current_user
 from app_blog.email import send_email
 
 
@@ -139,6 +137,7 @@ def password_reset_request():
             token = user.generate_reset_token()
             send_email(user.email,
                        'Reset your password',
+                       'auth/email/reset_password',
                        user=user,
                        token=token,
                        next=request.args.get('next'))
