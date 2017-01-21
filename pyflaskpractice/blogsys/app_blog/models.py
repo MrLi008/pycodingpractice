@@ -38,8 +38,8 @@ class Role(db.Model):
             'Moderator': (Permission.FOLLOW |
                           Permission.COMMENT |
                           Permission.WRITE_ARTICLES |
-                          Permission.MODERATE_COMMENTS, False),
-            'Administrator': (0xff, False)
+                          Permission.MODERATE_COMMENTS, True),
+            'Administrator': (0xff, True)
         }
         for r in roles:
             role = Role.query.filter_by(name=r).first()
@@ -53,10 +53,8 @@ class Role(db.Model):
 
         db.session.commit()
 
-
-
     def __repr__(self):
-        return '<Role '+str(self.id)+','+self.name+','+self.users+'>'
+        return '<Role: '+str(self.id)+'>'
 
 
 class User(UserMixin, db.Model):
@@ -77,6 +75,35 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
 
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+
+        for i in range(count):
+            u = User(email=forgery_py.internet.email_address(),
+                     username=forgery_py.internet.user_name(True),
+                     password=forgery_py.lorem_ipsum.word(),
+                     confirmed=True,
+                     name=forgery_py.name.full_name(),
+                     location=forgery_py.address.city(),
+                     about_me=forgery_py.lorem_ipsum.sentence(),
+                     member_since=forgery_py.date.date(True))
+
+            db.session.add(u)
+            try:
+                db.session.commit()
+            except IntegrityError, e:
+                print 'in generate_fake: ', e
+                db.session.rollback()
+
+
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -92,7 +119,6 @@ class User(UserMixin, db.Model):
 
         # print self.role
 
-
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -102,11 +128,9 @@ class User(UserMixin, db.Model):
         self.password_hash = generate_password_hash(password)
         # self.password_hash = password
 
-
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
         # return True
-
 
     def generat_confirmation_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
@@ -176,12 +200,12 @@ class User(UserMixin, db.Model):
 
     def can(self, permissions):
         return self.role is not None \
-                and (self.role.permissions & permissions) == permissions
+                and self.role.permissions == permissions
 
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
 
-    def pin(self):
+    def ping(self):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
 
@@ -202,7 +226,14 @@ class User(UserMixin, db.Model):
 
 
     def __repr__(self):
-        return '<User '+str(self.id)+','+self.username+','+str(self.role_id)+','+self.password_hash+'>'
+        return '<User id: ' +str(self.id)\
+               + ', username: ' + self.username\
+               + ', role_id: ' + str(self.role_id)\
+               + ', password_hash: ' + self.password_hash\
+               + ', email: ' + self.email\
+               + ', confirmed: '+ str(self.confirmed)\
+               + ', name: ' + self.name\
+               + '>'
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -219,6 +250,32 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+
+    @staticmethod
+    def generate_fake(count=100):
+        from random import seed, randint
+        import forgery_py
+
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            u = User.query.offset(randint(0, user_count - 1)).first()
+            p = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 5)),
+                     timestamp=forgery_py.date.date(True),
+                     author=u)
+
+            db.session.add(p)
+            db.session.commit()
 
 
 if __name__ == '__main__':

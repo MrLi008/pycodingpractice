@@ -11,6 +11,7 @@ from app_blog.email import send_email
 
 @auth.before_app_request
 def before_request():
+    db.create_all()
     if current_user.is_authenticated \
             and not current_user.confirmed \
             and request.endpoint[:5] != 'auth.' \
