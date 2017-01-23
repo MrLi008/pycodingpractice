@@ -13,7 +13,7 @@ from ..decorators import admin_required
 
 
 
-@mainofindex.route('/')
+@mainofindex.route('/', methods=['GET', 'POST'])
 def index():
     form = PostForm()
     if current_user.can(Permission.WRITE_ARTICLES) \
@@ -75,14 +75,15 @@ def edit_profile():
 @mainofindex.route('/edit_profile/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def edit_profile_admin():
+def edit_profile_admin(id):
+    print id
     user = User.query.get_or_404(id)
-    form = EditProfileAdminForm()
+    form = EditProfileAdminForm(user=user)
     if form.validate_on_submit():
         user.email = form.email.data
         user.username = form.username.data
         user.confirmed = form.confirmed.data
-        user.role = form.role.data
+        user.role = Role.query.get(form.role.data)
         user.name = form.name.data
         user.location = form.location.data
         user.about_me = form.about_me.data

@@ -54,7 +54,10 @@ class Role(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return '<Role: '+str(self.id)+'>'
+        return '<Role: '+str(self.id)\
+               +', name: '+str(self.name)\
+               +', permissions: '+str(self.permissions)\
+               +', default: '+str(self.default)+'>'
 
 
 class User(UserMixin, db.Model):
@@ -200,7 +203,7 @@ class User(UserMixin, db.Model):
 
     def can(self, permissions):
         return self.role is not None \
-                and self.role.permissions == permissions
+                and self.role.permissions&permissions == permissions
 
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
@@ -226,14 +229,19 @@ class User(UserMixin, db.Model):
 
 
     def __repr__(self):
-        return '<User id: ' +str(self.id)\
-               + ', username: ' + self.username\
-               + ', role_id: ' + str(self.role_id)\
-               + ', password_hash: ' + self.password_hash\
-               + ', email: ' + self.email\
-               + ', confirmed: '+ str(self.confirmed)\
-               + ', name: ' + self.name\
-               + '>'
+        try:
+            strs = '<User id: ' +str(self.id)\
+                   + ', username: ' + self.username\
+                   + ', role_id: ' + str(self.role_id)\
+                   + ', password_hash: ' + self.password_hash\
+                   + ', email: ' + self.email\
+                   + ', confirmed: '+ str(self.confirmed)\
+                   + ', name: ' + self.name\
+                   + '>'
+        except TypeError, e:
+            print e
+            strs = 'wrong...'
+        return strs
 
 
 class AnonymousUser(AnonymousUserMixin):

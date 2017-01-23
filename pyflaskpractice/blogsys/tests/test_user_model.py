@@ -130,6 +130,8 @@ class UserModelTestCase(unittest.TestCase):
     #     u = AnonymousUser()
     #     self.assertFalse(u.can(Permission.FOLLOW))
 
+
+
     def test_timestamps(self):
         u = User(password='cat')
         db.session.add(u)
