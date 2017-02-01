@@ -25,7 +25,8 @@ class RegistrationForm(FlaskForm):
                                               'numbers, dots or underscores')])
 
     password = PasswordField('password', validators=[DataRequired(),
-                                                     EqualTo('password2', message='Passwords must match.')])
+                                                     EqualTo('password2',
+                                                        message='Passwords must match.')])
     password2 = PasswordField('Confirm password', validators=[DataRequired()])
     submit = SubmitField('Register')
 
@@ -43,7 +44,10 @@ class RegistrationForm(FlaskForm):
 
 class ChangePasswordForm(FlaskForm):
     old_password = PasswordField('Old password', validators=[DataRequired()])
-    password = PasswordField('New password', validators=[DataRequired(), EqualTo('password2', message='Password must match')])
+    password = PasswordField('New password',
+                             validators=[DataRequired(),
+                                         EqualTo('password2',
+                                                 message='Password must match')])
     password2 = PasswordField('Confirm: ', validators=[DataRequired()])
 
     submit = SubmitField('Update Password')
@@ -66,8 +70,10 @@ class PasswordResetForm(FlaskForm):
 
 
 class ChangeEmailForm(FlaskForm):
-    email = StringField('New Email', validators=[DataRequired(), Length(1, 64), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    email = StringField('New Email',
+                        validators=[DataRequired(), Length(1, 64), Email()])
+    password = PasswordField('Password',
+                             validators=[DataRequired()])
     submit = SubmitField('Update Email Addresss')
 
     def validate_email(self, field):

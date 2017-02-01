@@ -1,10 +1,12 @@
 #config=utf8
 
 from flask_wtf import FlaskForm
+from flask_pagedown.fields import PageDownField
 from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, Regexp
 from wtforms import ValidationError
 from app_blog.models import Role, User
+
 
 
 class NameForm(FlaskForm):
@@ -52,5 +54,12 @@ class EditProfileAdminForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    body = TextAreaField('Mind: ', validators=[DataRequired()])
+    body = PageDownField('Mind: ', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+
+class CommentForm(FlaskForm):
+    body = StringField('Enter your comment', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+

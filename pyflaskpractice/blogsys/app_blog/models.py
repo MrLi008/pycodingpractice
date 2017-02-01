@@ -8,6 +8,9 @@ from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app, request
 
+from markdown import markdown
+import bleach
+
 from datetime import datetime
 import hashlib
 
@@ -60,6 +63,18 @@ class Role(db.Model):
                +', default: '+str(self.default)+'>'
 
 
+class Follow(db.Model):
+    __tablename__ = 'follows'
+    follower_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
+                            primary_key=True)
+    followed_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
+                            primary_key=True)
+    timestamp = db.Column(db.DateTime,
+                          default=datetime.utcnow)
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -81,6 +96,19 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
 
+    followed = db.relationship('Follow',
+                               foreign_keys=[Follow.follower_id],
+                               backref=db.backref('follower', lazy='joined'),
+                               lazy='dynamic',
+                               cascade='all, delete-orphan')
+    followers = db.relationship('Follow',
+                                foreign_keys=[Follow.followed_id],
+                                backref=db.backref('followed', lazy='joined'),
+                                lazy='dynamic',
+                                cascade='all, delete-orphan')
+
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
@@ -91,10 +119,10 @@ class User(UserMixin, db.Model):
 
         for i in range(count):
             u = User(email=forgery_py.internet.email_address(),
-                     username=forgery_py.internet.user_name(True),
+                     username=forgery_py.internet.user_name(True)+str(i),
                      password=forgery_py.lorem_ipsum.word(),
                      confirmed=True,
-                     name=forgery_py.name.full_name(),
+                     name=forgery_py.name.full_name()+str(i),
                      location=forgery_py.address.city(),
                      about_me=forgery_py.lorem_ipsum.sentence(),
                      member_since=forgery_py.date.date(True))
@@ -105,6 +133,15 @@ class User(UserMixin, db.Model):
             except IntegrityError, e:
                 print 'in generate_fake: ', e
                 db.session.rollback()
+
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all():
+            if not user.is_following(user):
+                user.follow(user)
+                db.session.add(user)
+        db.session.commit()
+
 
 
 
@@ -213,20 +250,45 @@ class User(UserMixin, db.Model):
         db.session.add(self)
 
     def gravatar(self, size=100, default='identicon', rating='g'):
-        if request.is_secure:
-            url = 'https://secure.gravatar.com/avatar'
-        else:
-            url = 'https://www.gavatar.com/avatar'
+        # if request.is_secure:
+        #     url = 'https://secure.gravatar.com/avatar'
+        # else:
+        #     url = 'https://www.gavatar.com/avatar'
+        #
+        # myhash = self.avatar_hash or hashlib.md5(self.email.encode('utf-8')).hexdigest()
+        #
+        # return '{url}/{myhash}?s={size}&d={default}&r={rating}'. \
+        #     format(url=url,
+        #            myhash=myhash,
+        #            size=size,
+        #            default=default,
+        #            rating=rating)
+        return 'None...'
 
-        myhash = self.avatar_hash or hashlib.md5(self.email.encode('utf-8')).hexdigest()
+    def follow(self, user):
+        if not self.is_following(user):
+            f = Follow(follower=self, followed=user)
+            db.session.add(f)
 
-        return '{url}/{myhash}?s={size}&d={default}&r={rating}'. \
-            format(url=url,
-                   myhash=myhash,
-                   size=size,
-                   default=default,
-                   rating=rating)
 
+    def unfollow(self, user):
+        f = self.followed.filter_by(followed_id=user.id).first()
+        if f:
+            db.session.delete(f)
+
+    def is_following(self, user):
+        return self.followed.filter_by(
+            follower_id=user.id).first() is not None
+
+    def is_followed_by(self, user):
+        return self.follwers.filter_by(
+            follower_id=user.id).first() is not None
+
+    @property
+    def followed_posts(self):
+        return Post.query.join(Follow,
+                               Follow.followed_id == Post.author_id).filter(
+            Follow.follower_id == self.id)
 
     def __repr__(self):
         try:
@@ -264,8 +326,10 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
 
     @staticmethod
@@ -284,6 +348,39 @@ class Post(db.Model):
 
             db.session.add(p)
             db.session.commit()
+
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote',
+                        'code', 'em', 'i', 'li', 'ol', 'pre',
+                        'strong', 'ul', 'h1', 'h2', 'h3', 'p']
+        target.body_html = bleach.linkify(bleach.clean(markdown(value, output_format='html'),
+                                                       tags=allowed_tags,
+                                                       strip=True))
+
+db.event.listen(Post.body, 'set', Post.on_changed_body)
+
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    disabled = db.Column(db.Boolean)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i',
+                        'strong']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
+
+db.event.listen(Comment.body, 'set', Comment.on_changed_body)
 
 
 if __name__ == '__main__':
