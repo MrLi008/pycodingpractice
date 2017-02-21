@@ -1,0 +1,9 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Spider{% endblock %}
+{% block content %}
+<div class="container">
+    {% for v in result %}
+    <span>{{ v }}</span>
+    {% endfor %}
+</div>
+{% endblock %}
