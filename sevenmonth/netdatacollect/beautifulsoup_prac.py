@@ -13,19 +13,19 @@ data = requests.get(url)
 encoding = requests.utils.get_encodings_from_content(data.content)[0]
 data.encoding = encoding
 
-print data.text
+# print data.text
 
 b = BeautifulSoup(data.text)
 
-data = b.find('div', {'class':'db_nav'})
+data = b.findAll('a', recursive=True,)
+#
+for d in data:
+    try:
+        if d['href'] not in (None, '#', r'^javascript')\
+                and d.string not in (None,):
+            print d['href'], '------->>>>>>>', d.string
+    except KeyError, e:
+        print e, ' ;;;'
 
-for d in data.a.next_siblings:
-    print d, '..........'
-
-
-    b2 = BeautifulSoup(d)
-    data2 = b2.findAll('a')
-    for d2 in data2:
-        print d2
 
 print len(data)
