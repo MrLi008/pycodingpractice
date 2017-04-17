@@ -8,7 +8,7 @@ from flask import request
 from flask import redirect
 from flask import abort
 from flask import make_response
-from flask.ext.script import Manager
+from flask_script import Manager
 from flask import render_template
 
 

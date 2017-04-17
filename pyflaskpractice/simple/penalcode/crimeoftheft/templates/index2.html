@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block page_content %}
+<div class="page-header">
+    <h1>Hi</h1></br>
+    <h2>输入数据: {{ data }}</h2>
+
+    <h3>选项: {{ select }}</h3>
+</div>
+
+{{ wtf.quick_form(form) }}
+
+</body>
+</html>
+
+
+{% endblock %}

@@ -14,3 +14,10 @@ print 'b:\n',b
 print 'a*b:\n',a*b
 
 print 'a**b:\n', a**b
+
+
+a = np.array([3, 14])
+b = np.array([1, 1]).reshape((2,1))
+c = np.array([0.5, 1]).reshape((2,1))
+print a*b*c
+print b*a*c

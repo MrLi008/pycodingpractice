@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if name %}
+{{ name }}
+{% else %}
+cao
+{% endif %}
+
+<label id="count" value="hahahaha">lll</label>
+
+<script type="text/javascript">
+ function hehe() {
+     alert('fafa');
+ }
+
+ eval('hehe()');
+ count = $("#count").val();
+ data = $.ajax('/t/1', {
+                url: '/t/1',
+                context: count,
+                data:{
+                  'count': count
+                },
+                dataType: 'json',
+                type: 'POST',
+                success: function(data){
+                    alert('success.....'+data);
+                    $("#count").innerText = data.result;
+                }
+            });
+ alert($("count"));
+ alert(data);
+$("count").innerText = data;
+ alert($("count").innerText);
+</script>
+
+</body>
+</html>

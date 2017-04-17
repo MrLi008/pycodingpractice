@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block page_content %}
+<div class="page-header">
+    <h1>Hi</h1></br>
+
+
+    {{ session['postdata'] }}
+    <!--<h2>choices: <br/>-->
+        <!--{% for choice in form.chpre.choices %}-->
+        <!--{{ choice[0] }} -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; {{ choice[1] }}  <br/>-->
+        <!--{% endfor %}-->
+    <!--</h2>-->
+    {% for k in res_re.keys() %}
+        <input type="checkbox" name="{{ k }}" value="{{ k }}" id="{{ k }}"
+            onclick='show( "{{ k }}" )'/>{{ k }}
+        {% for vk in res_re.get(k).keys() %}
+    <input type="radio" name="{{ vk }}" value="{{ vk }}" class="{{ k }}" id="{{ vk }}" style="visibility: hidden;">
+
+    </input>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+<!--{{ wtf.quick_form(form) }}-->
+<script type="text/javascript">
+    function show(className) {
+
+
+        var tag = 'input';
+
+
+        alert(className);
+        el = document.getElementsByTagName(tag);
+        var pattern = new RegExp("(^|\\s)" + className + "(\\s|$)");
+        for(var i=0; i<el.length; i++){
+            if(pattern.test(el[i].className)){
+                alert(el[i])
+                el[i].style.visibility = 'visible';
+            }
+        }
+
+    }
+</script>
+</body>
+</html>
+
+
+{% endblock %}

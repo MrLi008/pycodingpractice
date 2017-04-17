@@ -11,7 +11,7 @@ from datetime import datetime
 
 # form
 from flask_wtf.form import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, SelectMultipleField
 from wtforms.validators import DataRequired
 from flask_migrate import Migrate, MigrateCommand
 from flask_email import EmailMessage
@@ -24,6 +24,7 @@ import sqlconfig
 class NameForm(FlaskForm):
     name = StringField('What is your name:', validators=[DataRequired()])
     message = StringField('Input your message: ', validators=[DataRequired()])
+
     submit = SubmitField('Submit')
 
 

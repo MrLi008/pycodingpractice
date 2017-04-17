@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>盗窃罪</title>
+		<link rel="stylesheet" href="../../login/static/css/admin.css"/>
+        <link rel="stylesheet" href="../../login/static/css/amazeui.datatables.min.css">
+        <link rel="stylesheet" href="../../login/static/css/amazeui.min.css">
+        <link rel="stylesheet" href="../../login/static/css/app.css">
+        <script src="../../login/static/js/amazeui.min.js"></script>
+        <script src="../../login/static/js/app.js"></script>
+        <script src="../../login/static/js/jquery.min.js"></script>
+	</head>
+	<body class="am-scrollable-vertical">
+		<div class="col-md-12 am-u-md-12">
+            <h1><!--{{ doc.name }}--></h1>
+        <hr>
+            <form class="am-form" method="post" action="">
+                <fieldset>
+                    <legend>犯罪嫌疑人基本信息</legend>
+                        <!--{% csrf_token %}-->
+                        <ul class="am-avg-sm-3 am-thumbnails">
+                            <li>
+                                <div class="am-panel am-panel-primary">
+                                    <div class="am-panel-hd">
+                                <h3 class="am-panel-title">法定从轻减轻情节</h3>
+                            </div>
+                            <ul class="am-list am-list-static">
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="10" onclick="addCount(this)"> 未成年犯罪
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="3" onclick="addCount(this)"> 老年人犯罪
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="5" onclick="addCount(this)"> 盲人聋哑人犯罪
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="-3" onclick="addCount(this)"> 限制行为能力人犯罪
+                                    </label>
+                                </li>
+                                <li> 
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="-20" onclick="addCount(this)"> 预备犯
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="-20" onclick="addCount(this)"> 中止犯
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="-20" onclick="addCount(this)"> 未遂犯
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                       <input type="checkbox" value="-20" onclick="addCount(this)"> 从犯
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                       <input type="checkbox" value="-20" onclick="addCount(this)"> 胁从犯犯
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                       <input type="checkbox" value="-20" onclick="addCount(this)"> 自首
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                       <input type="checkbox" value="-20" onclick="addCount(this)"> 立功
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                       <input type="checkbox" value="-20" onclick="addCount(this)"> 坦白
+                                    </label>
+                                </li>
+                                
+                               
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                       	<div class="am-g">
+                            <div class="am-panel am-panel-secondary">
+                                <div class="am-panel-hd">
+                                    <h3 class="am-panel-title">盗窃罪</h3>
+                                </div>
+                                <ul class="am-list am-list-static">
+                                    <li>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="10" onclick="addCount(this)"> 数额较大
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="10" onclick="addCount(this)"> 数额巨大
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="10" onclick="addCount(this)"> 数额特别巨大
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="am-g"   style="margin-top: 1%;">
+                            <div class="am-panel am-panel-secondary">
+                                <div class="am-panel-hd">
+                                    <h3 class="am-panel-title">酌定处罚情节</h3>
+                                </div>
+                                <ul class="am-list am-list-static">
+                                    <li>
+                                            <label class="am-checkbox-inline">
+                                                <input type="checkbox" value="10" onclick="addCount(this)"> 前科
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div>
+                                
+                                
+                                
+                                <div class="am-g" style="margin-top: 2%;">
+                                	<div class="am-panel am-panel-secondary">
+                                        <div class="am-panel-hd">
+                                           <h3 class="am-panel-title">法定从重处罚情节</h3>
+                                        </div>
+                                        <ul class="am-list am-list-static">
+                                        <li>
+                                            <label class="am-checkbox-inline">
+                                               <input type="checkbox" value="10" onclick="addCount(this)">累犯
+                                            </label>
+                                        </li>
+                                        </ul>
+                                    </div>
+                                	
+                                </div>
+                               
+                                
+                                
+                                <div class="am-g" >
+                                	<div class="am-panel am-panel-secondary">
+                                        <div class="am-panel-hd">
+                                              <h3 class="am-panel-title">法定从宽处罚情节</h3>
+                                         </div>
+                                        <ul class="am-list am-list-static">
+                                          <li>
+                                             <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="10" onclick="addCount(this)"> 刑事和解
+                                           </label>
+                                           </li>
+                                        </ul>
+                                 
+                                </div>
+                                </div>
+                                
+                            </li>
+                            <li>
+                              <div class="am-panel am-panel-primary">
+                            <div class="am-panel-hd">
+                                <h3 class="am-panel-title">酌情从轻处罚情节</h3>
+                            </div>
+                            <ul class="am-list am-list-static">
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="10" onclick="addCount(this)"> 退赃退赔
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="3" onclick="addCount(this)"> 积极赔偿
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="5" onclick="addCount(this)"> 取得谅解
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="-3" onclick="addCount(this)"> 被害人有过错
+                                    </label>
+                                </li>
+                                <li> 
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="-20" onclick="addCount(this)"> 配合追缴违法所得 挽回较大损失
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="-20" onclick="addCount(this)"> 盗窃近亲属财务
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="-20" onclick="addCount(this)"> 却因生活学习治病继续而盗窃
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="am-checkbox-inline">
+                                       <input type="checkbox" value="-20" onclick="addCount(this)"> 初次 偶然
+                                    </label>
+                                </li>
+                                
+                               
+                            </ul>
+                        </div>
+                    </li>
+                    
+                             
+                          
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        </ul>
+                        <div class="am-form-group">
+                     <hr>
+                    <strong>分值：</strong><span id="count" name="count" class="am-badge am-badge-danger am-text-default">0</span>
+                     <hr>
+                </div>
+                <input type="hidden" name="score" id="score" value="0">
+                <ul class="am-avg-sm-4 am-thumbnails">
+                    <li><a type="button" class="am-btn am-btn-primary am-btn-block" href="{% url 'pibu_step2' doc.id %}">使用此结果／下一步</a></li>
+                    <li><a type="button" class="am-btn am-btn-secondary am-btn-block" href="{% url 'pibu_step2' doc.id %}">不使用此结果</a></li>
+                    <li><a type="button" class="am-btn am-btn-success am-btn-block" href="{% url 'pibu_step2' doc.id %}">证据充分／下一步</a></li>
+                    <li><a type="button" class="am-btn am-btn-default am-btn-block" href="{% url 'pibu_step2' doc.id %}">证据不充分／存疑</a></li>
+                </ul>
+            </fieldset>
+        </form>
+    </div>
+    
+    
+    <script>
+        function addCount(obj) {
+            count = document.getElementById("count");
+        score = document.getElementById("score");
+
+        if (obj.checked==true) {
+            count.innerText = parseInt(count.innerText) + parseInt(obj.value);
+            score.value = parseInt(score.value) + parseInt(obj.value);
+        } else {
+            obj.checked==false
+            count.innerText = parseInt(count.innerText) - parseInt(obj.value);
+            score.value = parseInt(score.value) - parseInt(obj.value);
+        }
+
+
+        if (parseInt(count.innerText) > 50) {
+            count.className = "am-badge am-badge-success am-text-default"
+        } else {
+            count.className = "am-badge am-badge-danger am-text-default"
+        }
+        function hehe(){alert('fafa');}
+        eval("hehe()")
+    }
+        
+//      function myFunction(){
+//      	var a=document.getElementById("text1").currentStyle.height;
+//      	alert(a);
+//      }
+    </script>
+	</body>
+</html>
