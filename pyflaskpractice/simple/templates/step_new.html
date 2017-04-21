@@ -10,8 +10,8 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <link rel="icon" type="image/ico" href="static/i/favicon.ico">
-    <link rel="stylesheet" href="static/css/amazeui.min.css" />
+    <link rel="icon" type="image/ico" href="/static/i/favicon.ico">
+    <link rel="stylesheet" href="/static/css/amazeui.min.css" />
     <style>
         @media only screen and (min-width: 1200px) {
             .blog-g-fixed {
@@ -71,7 +71,7 @@
 <body>
 <header class="am-topbar">
     <h1 class="am-topbar-brand">
-        <a href="/"><img src="static/img/app.png">太原市万柏林区人民检察院案件数据应用平台</a>
+        <a href="/"><img src="/static/img/app.png">太原市万柏林区人民检察院案件数据应用平台</a>
     </h1>
 
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
@@ -111,19 +111,19 @@
                     <ul class="am-list am-list-static">
                         <li>
                             <label class="am-checkbox-inline">
-                                <input id="input1" name="infoInput" value="患有严重疾病、生活不能自理" type="checkbox">
+                                <input id="input1" name="infoInput" value="患有严重疾病、生活不能自理" type="checkbox" onclick="addCount(this)">
                                 <span class="infoSpan">患有严重疾病、生活不能自理</span>
                             </label>
                         </li>
                         <li>
                             <label class="am-checkbox-inline">
-                                <input name="infoInput" value="怀孕或者正在哺乳自己婴儿的妇女" type="checkbox">
+                                <input name="infoInput" value="怀孕或者正在哺乳自己婴儿的妇女" type="checkbox" onclick="addCount(this)">
                                 <span class="infoSpan">怀孕或者正在哺乳自己婴儿的妇女</span>
                             </label>
                         </li>
                         <li>
                             <label class="am-checkbox-inline">
-                                <input name="infoInput" value="系生活不能自理的人的唯一抚养人" type="checkbox">
+                                <input name="infoInput" value="系生活不能自理的人的唯一抚养人" type="checkbox" onclick="addCount(this)">
                                 <span class="infoSpan">系生活不能自理的人的唯一抚养人</span>
                             </label>
                         </li>
@@ -140,29 +140,58 @@
 </footer>
 
 <!--[if lt IE 9]>
-<script src="static/js/jquery.min.js"></script>
-<script src="static/js/modernizr.js"></script>
-<script src="static/js/amazeui.ie8polyfill.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/modernizr.js"></script>
+<script src="/static/js/amazeui.ie8polyfill.min.js"></script>
 <![endif]-->
 
 <!--[if (gte IE 9)|!(IE)]><!-->
-<script src="static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
 <!--<![endif]-->
-<script src="static/js/amazeui.min.js"></script>
+<script src="/static/js/amazeui.min.js"></script>
 <script>
+    actions = new Object();
+    step = 1;
+
+
+    function addCount(obj) {
+        obj.name = obj.value;
+        if(obj.checked === true){
+            actions[obj.name] = obj.value;
+
+        }else{
+            obj.checked = false;
+            delete actions[obj.name];
+        }
+
+    }
     $("#nextstep").click(function(){
         debugger;
+        data = actions;
         $.ajax({
-            url:'jsonpage',
+            url:'/jsonpage/{{ id }}',
             type:"POST",
             dataType:"json",
             asynch:true,
-            data:$('#form').html(),
+            data:{'actions':data,'step':step},
             success: function(data) {
                 var len=$(".am-list-static>li").length;
-                for(i=0;i<=len;i++){
-                    $("[name='infoInput']").eq(i).val(data['逮捕标准第六条'][i]);
-                    $(".infoSpan").eq(i).text(data['逮捕标准第六条'][i]);
+                step = parseInt(data['step']);
+                if(step==1){
+                    for(i=0;i<len;i++){
+                        $("[name='infoInput']").eq(i).val(data['逮捕标准第六条'][i]);
+                        $(".infoSpan").eq(i).text(data['逮捕标准第六条'][i]);
+                        alert(data['逮捕标准第六条'][i]);
+                    }
+                }else if(step==2){
+                    $(".am-panel-title").text(data['title']);
+                    console.dir($(".am-panel-title"));
+                    $(".am-panel-hd").after('<div class="am-form-group"><span style="font-family: 微软雅黑;font-size: 1.6rem;display: inline-block;margin-bottom: 0.5rem;font-weight: 700;"></span><input type="text" class="" name="amount" id="doc-ipt-amount-1" placeholder="输入数额" required="" onkeyup="this.value=this.value.replace(/[^0-9-]+/,\'\')" style="width:100%;font-size: 1.6rem;padding: .5em;display: block;color: #555;background-color: #fff;line-height: 1.2"></div>');
+                    $(".am-form-group>span:eq(0)").text(data['input'][0]);
+                    $(".am-list-static").hide();
+                }else if(step==3){
+                    $(".am-panel-title").text(data['title']);
+                    $(".am-list-static").hide();
                 }
             }
         });
