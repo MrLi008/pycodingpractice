@@ -8,14 +8,12 @@
 #  $  $
 #   $$
 
-
+print __file__
 
 
 
 import matplotlib.pyplot as plt
-
-import mpl_toolkits.mplot3d as mplt
-
+from mpl_toolkits.mplot3d import axes3d
 import numpy as np
 
 

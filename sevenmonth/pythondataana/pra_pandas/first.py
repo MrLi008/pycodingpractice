@@ -23,8 +23,8 @@ multiplication_table = multiplication_table+multiplication_table.T
 
 multiplication_table[1:, 1:] = multiplication_table[1:, 0]*multiplication_table[0, 1:]
 
-res = [ x*y for x in range(0, 10) for y in range(0, 10)]
-res = np.reshape(res, (10,10))
+res = [ x*y for x in range(0, 10) for y in range(x, 10) ]
+res = np.reshape(np.array(res), (10,10))
 print res
 
 print multiplication_table
