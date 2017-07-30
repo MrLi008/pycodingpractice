@@ -1,11 +1,15 @@
 # coding=utf8
 
+from tests_ import Check
+
+
 def init_test_list(*tests):
 
     test_list = []
 
     for test in tests:
-        test_list.append(test)
+        if isinstance(test, Check):
+            test_list.append(test)
 
     return test_list
 
