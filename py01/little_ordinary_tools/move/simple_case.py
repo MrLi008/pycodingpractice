@@ -3,6 +3,7 @@
 # system
 import os
 import time
+import random
 
 # local
 from tests_ import Check
@@ -11,14 +12,17 @@ import base_utils
 
 '''
     最简单的测试用例
-    
+    test1
     本地, 移动到 本地.
     一个文件
+    
+    test2
+    本地, 移动到 远程服务器(ssh)
 '''
 
 
 class OneFileToLocal(Check):
-    def __init__(self, src, pathfrom, pathto):
+    def __init__(self, src, pathfrom='', pathto=''):
 
         # filename to move
         self.src = src
@@ -27,7 +31,10 @@ class OneFileToLocal(Check):
         self.pathfrom = pathfrom
 
         # 目标文件的服务路的绝对路径
-        self.pathto = pathto
+        if pathto=='':
+            self.pathto =  pathfrom+'_'+str(random.randint())
+        else:
+            self.pathto = pathto
 
         # 根据文件传送状态, 逐级增加
         self.statuslist = [u'未传送',u'正在传送', u'完成传送']
@@ -98,7 +105,26 @@ class OneFileToLocal(Check):
         print '耗时: ', self.consuming_time
 
 
-
+# Little test for the class function is OK.
 if __name__ == '__main__':
-    t = OneFileToLocal('test.txt', 'from', 'to')
+
+    src = 'test.txt'
+    src_path = 'from'
+    aim_path = 'to'
+
+    if not os.path.exists(src_path):
+        os.mkdir(src_path)
+    if not os.path.exists(src_path+base_utils.OS_path_split()+src):
+        with open(src_path+base_utils.OS_path_split()+src, 'wb') as f:
+            f.write('1234')
+
+
+    if not os.path.exists(aim_path):
+        os.mkdir(aim_path)
+
+    t = OneFileToLocal(src, src_path, aim_path)
     t.main()
+
+
+
+
