@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title> Flasky - Login </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="/static/styles.css">
+
+  </head>
+  <body>
+    
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Flasky</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                
+                
+                <li><a href="/auth/login">Log In</a></li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container">
+    
+
+    
+<div class="page-header">
+    <h1>Login</h1>
+
+</div>
+
+<div class="col-md-4">
+    
+<form action="" method="post"
+  class="form" role="form">
+  <input id="csrf_token" name="csrf_token" type="hidden" value="ImYxNWYyZDVhODk3NTRhMTllYWRkNWE0ZmI0NWU0YmIxYTY2YTM3ZWEi.C6T98A.YxTLJIBn0-AghlaveBsRaaXgFTI">
+  
+          <p class="error">The CSRF token is missing.</p>
+    
+
+
+
+
+
+
+<div class="form-group  required"><label class="control-label" for="email">Email</label>
+        
+          <input class="form-control" id="email" name="email" required type="text" value="952934650@qq.com">
+        
+  </div>
+
+
+    
+
+
+
+
+
+
+<div class="form-group  required"><label class="control-label" for="password">Password</label>
+        
+          <input class="form-control" id="password" name="password" required type="password" value="">
+        
+  </div>
+
+
+    
+
+
+
+
+
+  
+
+
+    <div class="checkbox">
+      <label>
+        <input id="remember_me" name="remember_me" type="checkbox" value="y"> Keep mo logged in
+      </label>
+    </div>
+  
+
+
+
+
+    
+
+
+
+
+
+  
+
+  
+  
+
+
+    <input class="btn btn-default" id="submit" name="submit" type="submit" value="Login in">
+  
+
+
+
+
+    
+
+</form>
+    <p>Forgot Your Password?
+        <a href="/auth/reset">
+            CLick here to reset it
+        </a>.
+    </p>
+    <p>New user?
+        <a href="/auth/register">
+            Click here to register
+        </a>.
+    </p>
+</div>
+
+</div>
+
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment-with-locales.min.js"></script>
+<script>
+moment.locale("en");
+function flask_moment_render(elem) {
+    $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'));
+    $(elem).removeClass('flask-moment').show();
+}
+function flask_moment_render_all() {
+    $('.flask-moment').each(function() {
+        flask_moment_render(this);
+        if ($(this).data('refresh')) {
+            (function(elem, interval) { setInterval(function() { flask_moment_render(elem) }, interval); })(this, $(this).data('refresh'));
+        }
+    })
+}
+$(document).ready(function() {
+    flask_moment_render_all();
+});
+</script>
+
+  </body>
+</html>
+
+
+jhgjufvjyuukjvn vhytnnbchgschju\iorft oghcrtdgh

@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+<html lang="en">
+<head>
+    <base id="pcbase" href="http://11.2.9.11:8085/cas/" data-base="http://11.2.9.11:8085/cas/">
+  <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+    
+    <title>山西煤炭监管信息平台统一门户</title>
+  
+  
+    <link rel="stylesheet" href="/cas/css/cas.css;jsessionid=534D308D9744049E2BB66E80B727645F" />
+    <link rel="icon" href="/cas/icon/sxmt-logo.ico;jsessionid=534D308D9744049E2BB66E80B727645F" type="image/x-icon" />
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    
+
+    <!-- validator -->
+    <link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.min.css"/>
+
+    <!-- login css -->
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+</head>
+<body id="cas">
+<div class="sxmt-login-nav">
+    <div class="col-xs-4 p-tb-1">
+        <img class="img-responsive center-block" src="images/logo-login.png" />
+    </div>
+    <div class="col-xs-2"></div>
+    <div class="col-xs-6 p-tb-2">
+        <img class="img-responsive center-block" src="images/slogn.png" />
+    </div>
+</div>
+
+
+
+
+<div class="sxmt-bg">
+<img class="img-responsive center-block login-bg" src="images/banner-login1.png" data-bg="1"/>
+<div id="container" style="width: 360px; position: relative;right: 5%;float: right;margin-top: -25%;">
+<div id="content">
+<div id="cookiesDisabled" class="errors" style="display:none;">
+    <h2>Browser cookies disabled</h2>
+    <p>Your browser does not accept cookies. Single Sign On WILL NOT WORK.</p>
+</div>
+
+
+
+
+<div class="box" id="login" style="">
+    <form id="fm1" action="/cas/login;jsessionid=534D308D9744049E2BB66E80B727645F?service=http://11.2.8.9:80/Home/IndexA" method="post">
+
+        
+
+        
+
+        
+
+        
+
+        <div class="login-form-row">
+            <div class="form-group">
+                <label for="username">用户名:</label>
+                
+                    
+                    
+                        
+                        <input id="username" name="username" class="required full-width" tabindex="1" accesskey="n" type="text" value="" autocomplete="off"/>
+                    
+                
+            </div>
+        </div>
+
+        <div class="login-form-row">
+            <div class="form-group">
+                <label for="password">密　码:</label>
+                    
+                
+                <input id="password" name="password" class="required full-width" tabindex="2" accesskey="p" type="password" value="" autocomplete="off"/>
+                <span id="capslock-on" style="display:none;"><p><img src="images/warning.png" valign="top"> CAPSLOCK key is turned on!</p></span>
+            </div>
+        </div>
+
+        <div class="login-form-row">
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <input class="btn-submit" style="width: 320px;" name="submit" accesskey="l" value="登录" tabindex="6" type="submit" />
+            </div>
+        </div>
+
+        <!--
+        <section class="row check">
+            <p>
+                <input id="warn" name="warn" value="true" tabindex="3" accesskey="w" type="checkbox" />
+                <label for="warn">转向其他站点前提示我。</label>
+                <br/>
+                <input id="publicWorkstation" name="publicWorkstation" value="false" tabindex="4" type="checkbox" />
+                <label for="publicWorkstation">I am at a public workstation.</label>
+                <br/>
+                <input type="checkbox" name="rememberMe" id="rememberMe" value="true" tabindex="5"  />
+                <label for="rememberMe">Remember Me</label>
+            </p>
+        </section>
+        -->
+
+        <section class="row btn-row">
+            <input type="hidden" name="lt" value="LT-68541-EZcQXNsjcpa1BhKf7BAwJOTfPcqzI7-cas01.sxmt.org" />
+            <input type="hidden" name="execution" value="c5556a86-775e-4835-ab73-3c8d17049467_ZXlKaGJHY2lPaUpJVXpVeE1pSjkuYkc5Nk5qTkhTVWh0YzJ0bFVXOUpOVUpxUzJOa04xRlFWRkZKVVUxWFpsUkpNR016VDFoVWNFeElaekIxZVcxbEsyRjZjaTlTV1RGeGFqTktUbGhMVG5GWFVuUjRTMmQwWW05VU1FMVVORU5RWXpkNU1VOXNTbGw1VVRabVZVMTJjSEpQUlVSSU1XUnlTVTE2Y1dsMFltSnNRVlpaTms4NFYzZDJkMk5DVUROdlMxaFNVWFp6VFcxUU5XaDNjRXRpVkVad1NGVm1XRVJ6UmpNeGRtTjRUazlWWjB4bE5tdDVlRXBaTm5aTkx6UnlUemxRVFd0NFNWVjBOSEkxVG0xRGFWSjRVMjlsY0VsbFJERTFNaXQ0YzJkdmN6RnZWMEV5WTBkNFMyMXNVV2xZWmxZeFVURm1SWEJOTTA5WFJETjJVV05TUmpsYVlsVmxOVlZwY1VSd1YwdG1SblpIUzFjeU9GSnRlakJQWVROT2RrWmtUWEpWVDJoMFIxUTNZMGhaTW1kR1RXWXlNVGhHTlU1WVQyZ3hZbHBMTWxsUFdXbDRSMjE0YlVjd2RWQlhWMmhETmtsWWVrd3dVelZQTVVKbWMwMUlWMDFRWkZSNllqWndSMUJJTWtWMldrdEdjRzluTkRGMWIwTnhTRUl3YURaMVJtRjZRMVp0TUVKdFJTc3ZZMVIxTm5Wa1ZFbDVXWHAzYkdWTVkzSmlOR05hWW01SWVVMUZSemQzTVhoQ1RqTjRPRTlEWnpNdlVtNHJNMWRJT1RCUVpuZFVjMUJ4VDB3clV6WkNja3MxUjFaMlYzZFVTVTR2TTJSM1NITjRNbkpuVmpsNVJXVlNObUpMTW5KeU5sZHJlbWRDUkRrNGN6aGxPWGsyY1RJeFRHMXJaR0YzTldaMVlXeENiWEZxTmpCeFFsTjFhR1pEVjBaQ0szcFRSMDQzZUZjM09ERlFjVFl3ZG1oUmMxZDNkRzFYUW05dmMyOVZPVTlsUzNVMGVUTkZlamt3WjJ0RWRYaElVVUZsUkRCcVprVlNNbUZPTVVnNE1GaFRORXdyV0RaRk16Y3hNVmRJTVdjd2F5czJSemhGT0dSellrOUVjV1ZLVEhnd2EzbDFjMVZrUWxwemFtRXZkMlJzWWpObU9FNXVOamw1YVZKVVZsQXdhRGRwVUhCSVlYQkZOMmxqTlU1aU1EZHBWakpRTlhaSGFXMWtSM1IzV0hKaVJHMVVSRzFaY0hwMU1URmhOVUZJT1ZwbFIyMW9Zelp6UTNSUGVESkRSMkpqT0VWVk9XcERlbVZJWlhSeFEzbDVXV0ZrUkZsWVJsbFZkamQwZVdGQk5VOU5WVVF3Y25oSVJsQnJSbXhoVDBOWGJEUlVUMDUyTnpKcU9WVTBhazkxZDNkWmRHc3ZkMUF2V0VSbVZtVlJNVk5ZTUVZNWJrRkNaazVIWkVaV1MyRjJNMmxaY0djME1uWTBhbkEyVjNKc1JGVk9UR1owZWtrd01VVlVXSGRJVFVVdmRFZEJORWhTZUcxMVYyNTZXblJWUTNreVdHTkliR2N5WmpscVEycHVZVlppY1dJcmIzSXJPRzg0VFZCVFVuZFFZMHRsZVVwck9FeGFNVFJQUkhCWWJWZzNOa1JwZEVOa1pVdE5aM2hrY1hwRFNIbHRZM0l6VUdzMmFFcFRaeTkxWXpGaVJqWTJOemhKVFdOVmNFVnJaWEpXYUU1aWRYZHBORTFoVUd4V1lYVlBlWFZpTTNoSVkzQnlSRlZwWkVKR2NsQjVWR1EzTDNwd1pFNWxXbm94V0dsU2JXUkJOWFJ2TDJSR2VqSlZiMkk1VUZoeU0xaHBSMGhpUlRrcldXWkpTVVI2YVZWWFRWazNiSFpTWkU1Wk0wNU5hRXBsWmtWbE9ESndlSHBhYkU1TVRtRlNRbEp5VERJeVZrSlhlbWR2ZVhGRlIwaDNjazV6VEZoMFNrbEVMelJpYzFkWFNVeEJaemhaVVd0NloybFNWa1VyUlZobU9YQm5NMVpNVUVOR1EyVm9NMUIyZVZneWNFY3lhMEpqTkZoeU9VZGlNSHAxVDA1dldrbEdUbVJKZVZSdFRHMHdNVEk0UVRSUFkyaDBOR3BrUlc5blRESm9Za1Z2UzJzeldISnNjM0JPY2pCUE1VZExRVUl3YmtGeWVIcEVaWFphV25kR0wxcFdibXhhVFZSbFZHaFFkM2xTUWxvNVQyUnFkelpQV2pGbGJVZHdWbVJuZDNGUlN6Z3JUamh4UjFoRWRtMHhiREJ2YkhoeVNFcEhURGhrV1VRNGNWaHFibUZUYkU4NVVXeHlSemwzT1d3NWNIZDVlVzFSYVVaTWFYZDFZVmxCTURKQlVHWkRkbmRSVVZnMVQyTlBiR1FyY25GWlRtOUpVWGdyUjFCV1NsWXpRM1JyUzJWaWJTODJLMHBRUkhoamFFVnlkMkpxUVROWU4wVmpNblIzYVVnMVVVTjVkMVpOUWtVeVVUaHNRbkpIZWtaUldrdHFaSFJRY1RNdlJIRjZlbFJKYm5CSlEwOVRWbkJPYmpGNVYwTk1ORzgwUkVGTlNHaGtRMEZDVmpsWmFrTlhTbUkxZEZOT2IxUTJUbmhOTm14U05uWktOR2xMVm5wWlMxSnlSRzlSYlVOSE5GWnNObXN4TjFjM1VGcFhPVUp2VEV0aFdESmplV1ZXVG1OclFtVnJielJNZUhsc2FuSjVXRXQ0TWpoMVEyZ3pVbE41UkZZMEwwMUxka1JQWVhkaFMzWXdOakZwTTJoWVJYUTRNRE55TjNZeFJIZHBUVUZwVVVKTVpsSnBaR2xYTDNObGMzUkRlbmRrY2tzM1NsRTJVMVpvYzIxUGJIaHJTbGxFWkdkU2RqUk5jemRLVG5sS2RHUkRXbFZ5VWpWalVEQjJVRzlqUWtaek16ZFpkMmN3UjNReWR6WkdabUZxWTNvMU55OVFPRGR5U0ZsVmNqWk5ZUzlVYVhKUGFWcEpjRzlEVmpCNFRHNURjM2dyTjJ0U1FrcHZkblZxUldwQlVIUTRNVkl3UjB4emNEaFJWVEIyWlV0UFpuSm9ZVkEzTXpaVU1qZFBOMloyUTJGeU5Xc3ZabVZ1YjFCak1WaHpWRkJ0ZDA1UmFtOU9SekF2UmxKWE1rOVlXVkoxUWpWb2VsYzJiblpMUlVOeFJFOUNjSFp6ZURGMWRYVlVWelp2Um1oc2JFNU9RM0JEU1RoeGIxRk1aRk5VTVVaalJGUlNUVmdyWlVoNWJYSldhR0YzYkhScU4zSmpiWFZ4ZDA0MlNtZElSMFJzVm5CQlpGQk1ZMGw1V21zNU9UQnFPRzlCU1cweGMwUTJNVk16V25CeVluZENVU3R6UWtGSlNqUldla05ZVEdRNU1VRkhka0ZXUzNFMWRIZFlOVEJHUlhwNFNsSnRiVmhRVGs4dlVXOXBhemxTUzFWQ1YxazBXSHBqTm10clpXRXlVamt6TUhKSllubG5hM0JxYUcxVVoxZGFUelUxSzJoVmNETmpRa3BXTTNKSWNrcEJNVzUxYlRCSGVXdzVWMFpVWjNCalVITjJVbmw0YjNWcWFuQndZbkV2VjBneGNHdG5VaTl5Y0UxbGJWaG5ZalJEVUV0RFVsaHhVVk52YUVZM09VWlVkWEZOWkU5alltcDVOV3gzTW5JcllUWlBhWGMwTDI0emJtSlpOMjVLWWpSUFZWSTBXa2R4WkhSMGVsVkRNMGRxVDFaTFYxcFRLemxPVkc4M2JIYzFhMk5DV1dKVVVVdGlaMVY0UkRCSk56RnFNalZ4TmtwTVVsQnlhamR2TjBaRVFrRjBNMmh6WmxoMVNUVkdSbGxuY2pOVlVsVXJhV2x4ZUU1SUwxbEpkVlI1UlhaQ2JUVkJkVGdyYkd0cmNWcElSREZQVUhwdlYzRXpTVUpuYUhsWGEwb3JLMFpOWm0xU1FVWk5aVWhvV21kRFNXMVlUeko1VEdkSWFrOVFOalpQUWxsc2JWWlhiVEJCTmpselUzQTJORU4zWlhSU2VFWlZWM1k0VTA1TmExQndWbkpLTVdwUWNtNTVRa0ZLWjBKbWMwUXlkVzVYTTJvNVUyaDZTRzgxWldONGNWUTJWbVJwVTBkeVR6QnlSbEJ3TkRKSlJXbDZkRU50TWtaaFVUWkNPRGRJUVRscE5scFdja040Vmk4NVRVZFZkbFZRVUcxdWFFbFJUak14ZVcxSVExa3JkV1ZLY2s0MmRERkhZU3RYTkRaNlNXMTJhRkp2VGtVMGVFaE5TbXhaZEdScVpWUTFkbEJNVVVaaGRUUklTVEpyWVRsMVlYcHZWWGt4TlRGbFNUQk1TbVpIVjNscmNucERaMU56YmtRNGFUQjVWVXBaYVc0MlZIQllLek5UU25oVlRWVmhibTFKWjNWNGFITlZjRkpaWVZWeVdqSkhTekFyUmpkVWRVeFlialJ5VDNoQ1pGWm9OMGxvWVhobVR6QlVXWGhsWm10bmJUVlVTaTlyTUhaUmFUTXJPREpETTNScVpuRXZkelZDVEM5cVNWWlNTVkpLVDJJdlIwRlJUMlUyU3pOaGJYTjNTbEZWVlRJMlRpc3dibmM5UFEuY0VybWQxU3c0TWc2QkVXSlZaNGFOb2ZaWnM5d1ZSZlZQSW5oODVWbFY2OERVZ293eFVGUWFDTzJBWkhLWG0yLXIzbEpmZXBwanVaYWhqVEFYY0QzUEE=" />
+            <input type="hidden" name="_eventId" value="submit" />
+
+
+
+        </section>
+    <div>
+</div></form>
+</div>
+
+
+
+</div> <!-- END #content -->
+
+</div> <!-- END #container -->
+</div>
+
+
+
+
+<div class="sxmt-login-footer">
+    <div class="container">
+    	<div class="bb">
+	        <p class="text-muted footer-text">Copyright © 2016 山西省煤炭工业厅. All rights reserved. 版本 </p>
+	   		<div class="intro">软件版本：V1.00<br />发布时间：2017-02-24 11:26</div>
+	        <div class="arrow-down"></div>
+        </div>
+    </div>
+</div>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="js/jquery/1.10.2/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+<!--[if lt IE 9]>
+<script src="js/html5/html5shiv.js" type="text/javascript"></script>
+<script src="js/html5/respond.min.js" type="text/javascript"></script>
+<![endif]-->
+<script src="js/head.min.js"></script>
+
+<script type="text/javascript" src="/cas/js/cas.js;jsessionid=534D308D9744049E2BB66E80B727645F"></script>
+<script src="js/login/login.js"></script>
+<style>
+    .container .arrow-down {
+        width: 0;
+	    height: 0;
+	    border-left: 10px solid transparent;
+	    border-right: 10px solid transparent;
+	    border-top: 10px solid #6C6C6C;
+	    display: none;
+	    position: absolute;
+	    left: 369px;
+	    top: 1px;
+    }
+    .container .intro{
+        width: 215px;
+	    position: absolute;
+	    display: none;
+	    background: #6C6C6C;
+	    color: white;
+	    font-size: 15px;
+	    left: 270px;
+	    top: -60px;
+	    padding-top: 10px;
+	    padding-right: 13px;
+	    padding-bottom: 10px;
+	    padding-left: 13px;
+    }
+    .bb{
+	    width: 400px;   
+	    position: relative;
+	    margin: auto;
+	    height: 60px;
+	    margin-top: 20px;
+    }
+    .container:hover .intro{display:block}
+    .container:hover .arrow-down{display:block}
+</style>
+
+</body>
+</html>
+
+

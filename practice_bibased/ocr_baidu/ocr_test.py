@@ -4,6 +4,7 @@
 from aip import AipOcr
 import PythonMagick
 import PyPDF2
+from PIL import Image
 import os
 
 
@@ -42,16 +43,19 @@ def getimgfilefrompdf(pdffile):
 
     # init image
     img = PythonMagick.Image()
-    img.density('300')
     for page in range(pagenums):
         img.read(pdffile+('[%s]'%page))
-        imgdata = PythonMagick.Image(img)
-        imgdata.sample('x1600')
-        imgdata.write(pdffile+str(page)+'.jpg')
+        # img.read(f.getPage(page))
+        # img = Image.open(pdffile+'['+str(page)+']')
+        img.density('300')
+        img.write(pdffile+'_'+str(page)+'.jpg')
+        # imgdata = PythonMagick.Image(pdffile+'_'+str(page)+'.jpg')
+        # imgdata.sample('x1600')
+        # imgdata.write(pdffile+str(page)+'.jpg')
 
         # img.write(pdffile + str(page) + '.jpg', 'rb')
 
-        result = aipOcr.general(open(pdffile + str(page) + '.jpg', 'rb').read(), options)
+        result = aipOcr.general(open(pdffile + '_'+ str(page) + '.jpg', 'rb').read(), options)
         print pdffile, str(page),'*'*100
         for res in result.keys():
             print result[res]

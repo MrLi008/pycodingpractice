@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>Flasky</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="/static/styles.css">
+
+  </head>
+  <body>
+    
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Flasky</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                
+                <li><a href="/user/mrli">Profile</a></li>
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li><a href="/moderate">Moderate Comments</a></li>
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="None...">
+                        Account <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/auth/change-password">Change Password</a></li>
+                        <li><a href="/auth/change-email">Change Email</a></li>
+                        <li><a href="/auth/logout">Log Out</a></li>
+                    </ul>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container">
+    
+
+    
+<div class="page-header" >
+    <h1>Hello,
+        
+        mrli
+        
+    </h1>
+    
+    <p>Pleased to meet you</p>
+    
+</div>
+<div >
+    
+    
+<form action="" method="post"
+  class="form" role="form">
+  <input id="csrf_token" name="csrf_token" type="hidden" value="IjQxZmExYTBlNTMyYTcyMjg2YzY5OGFmYzM0OWY1M2Q3M2ZmNzgzMDMi.C6WvZg.7Y3lk1LKsmTY-iRVdz_JN1f1Xuo">
+  
+    
+
+
+
+
+
+
+<div class="form-group  required"><label class="control-label" for="body">Mind: </label>
+        
+          <div class="flask-pagedown"><textarea class="form-control flask-pagedown-input" id="flask-pagedown-body" name="body" required></textarea></div>
+<div class="flask-pagedown-preview" id="flask-pagedown-body-preview"></div>
+<script type="text/javascript">
+f = function() {
+    if (typeof flask_pagedown_converter === "undefined")
+        flask_pagedown_converter = Markdown.getSanitizingConverter().makeHtml;
+    var textarea = document.getElementById("flask-pagedown-body");
+    var preview = document.getElementById("flask-pagedown-body-preview");
+    textarea.onkeyup = function() { preview.innerHTML = flask_pagedown_converter(textarea.value); }
+    textarea.onkeyup.call(textarea);
+}
+if (document.readyState === 'complete')
+    f();
+else if (window.addEventListener)
+    window.addEventListener("load", f, false);
+else if (window.attachEvent)
+    window.attachEvent("onload", f);
+else
+    f();
+</script>
+
+        
+  </div>
+
+
+    
+
+
+
+
+
+  
+
+  
+  
+
+
+    <input class="btn btn-default" id="submit" name="submit" type="submit" value="Submit">
+  
+
+
+
+
+    
+
+</form>
+    
+</div>
+<div class="post-tabs">
+    <ul class="nav nav-tabs">
+        <li  class="active">
+            <a href="/all">
+                All
+            </a>
+        </li>
+        
+        <li >
+            <a href="/followed">
+                Followers
+            </a>
+        </li>
+        
+    </ul>
+    <ul class="posts">
+    
+    <li class="post">
+        <div class="post-thumbnail">
+            <a href="/user/mrli">
+                <img class="img-rounded profile-thumbnail" src="None...">
+            </a>
+        </div>
+        <div class="post-content">
+            <div class="post-date"><span class="flask-moment" data-timestamp="2017-03-11T13:59:32Z" data-format="fromNow(0)" data-refresh="0" style="display: none">2017-03-11T13:59:32Z</span></div>
+            <div class="post-author"><a href="/user/mrli">mrli</a></div>
+            <div class="post-body">
+                
+                    <p>为其翁群翁群翁请问请问请问而且我而且请问</p>
+                
+            </div>
+            <div class="post-footer">
+                
+                <a href="/edit/18">
+                    <span class="label label-primary">Edit</span>
+                </a>
+                
+                <a href="/post/18">
+                    <span class="label label-default">Permalink</span>
+                </a>
+                <a href="/post/18#comments">
+                    <span class="label label-primary">0 Comments</span>
+                </a>
+            </div>
+        </div>
+    </li>
+    
+    <li class="post">
+        <div class="post-thumbnail">
+            <a href="/user/mrli">
+                <img class="img-rounded profile-thumbnail" src="None...">
+            </a>
+        </div>
+        <div class="post-content">
+            <div class="post-date"><span class="flask-moment" data-timestamp="2017-03-11T03:32:49Z" data-format="fromNow(0)" data-refresh="0" style="display: none">2017-03-11T03:32:49Z</span></div>
+            <div class="post-author"><a href="/user/mrli">mrli</a></div>
+            <div class="post-body">
+                
+                    <h1>GGGG</h1>
+<p>GGGGG</p>
+                
+            </div>
+            <div class="post-footer">
+                
+                <a href="/edit/17">
+                    <span class="label label-primary">Edit</span>
+                </a>
+                
+                <a href="/post/17">
+                    <span class="label label-default">Permalink</span>
+                </a>
+                <a href="/post/17#comments">
+                    <span class="label label-primary">0 Comments</span>
+                </a>
+            </div>
+        </div>
+    </li>
+    
+</ul>
+</div>
+
+
+<div class="pagination">
+    
+<ul class="pagination">
+    <li  class="disabled">
+        <a href="#">
+            &laquo;
+        </a>
+    </li>
+    
+        
+            
+            <li class="active">
+                <a href="/?page=1">1</a>
+            </li>
+            
+        
+    
+        
+            
+            <li>
+                <a href="/?page=2">2</a>
+            </li>
+            
+        
+    
+        
+            
+            <li>
+                <a href="/?page=3">3</a>
+            </li>
+            
+        
+    
+        
+            
+            <li>
+                <a href="/?page=4">4</a>
+            </li>
+            
+        
+    
+        
+            
+            <li>
+                <a href="/?page=5">5</a>
+            </li>
+            
+        
+    
+        
+        <li class="disabled"><a href="#">&hellip;</a></li>
+        
+    
+        
+            
+            <li>
+                <a href="/?page=8">8</a>
+            </li>
+            
+        
+    
+        
+            
+            <li>
+                <a href="/?page=9">9</a>
+            </li>
+            
+        
+    
+    <li >
+        <a href="/?page=2">
+            &raquo;
+        </a>
+    </li>
+</ul>
+
+</div>
+
+
+
+</div>
+
+
+    
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment-with-locales.min.js"></script>
+<script>
+moment.locale("en");
+function flask_moment_render(elem) {
+    $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'));
+    $(elem).removeClass('flask-moment').show();
+}
+function flask_moment_render_all() {
+    $('.flask-moment').each(function() {
+        flask_moment_render(this);
+        if ($(this).data('refresh')) {
+            (function(elem, interval) { setInterval(function() { flask_moment_render(elem) }, interval); })(this, $(this).data('refresh'));
+        }
+    })
+}
+$(document).ready(function() {
+    flask_moment_render_all();
+});
+</script>
+
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pagedown/1.0/Markdown.Converter.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pagedown/1.0/Markdown.Sanitizer.min.js"></script>
+
+
+  </body>
+</html>

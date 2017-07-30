@@ -1,0 +1,123 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=10" />
+		<link rel="stylesheet" type="text/css" href="generate.css"/>
+		<style type="text/css">
+			body
+			{
+				font-family: "Segoe UI", Tahoma, Verdana, "Sans-Serif";
+				font-size: 9pt;
+			}
+			.Header
+			{
+				font-family: "Segoe UI Light","Segoe UI", Tahoma, Verdana, "Sans-Serif";
+				font-size: 25pt;
+			}
+			.Subheader
+			{
+				font-size: 11pt;
+			}
+			input[type=text]
+			{
+				font-family: "Segoe UI", Tahoma, Verdana, "Sans-Serif";
+				font-size: 9pt;
+			}
+			input[type=button]
+			{
+				font-family: "Segoe UI Semibold","Segoe UI", Tahoma, Verdana, "Sans-Serif";
+				font-size: 11pt;
+			}
+			a, a:visited
+			{
+				font-size: 11pt;
+			}
+			.Sublink
+			{
+				font-size: 9pt;
+			}
+
+		</style>
+		<script type="text/javascript">
+			var ViewUrlMask = "http:\u002f\u002f11.2.8.72\u002fop\u002fview.aspx?src=WACFILEURL";
+			var EmbedCodeMask = "\u003ciframe src=\u0027http:\u002f\u002f11.2.8.72\u002fop\u002fembed.aspx?src=WACFILEURL\u0027 width=\u0027476px\u0027 height=\u0027288px\u0027 frameborder=\u00270\u0027\u003eThis is an embedded \u003ca target=\u0027_blank\u0027 href=\u0027http:\u002f\u002foffice.com\u0027\u003eMicrosoft Office\u003c\u002fa\u003e document, powered by \u003ca target=\u0027_blank\u0027 href=\u0027http:\u002f\u002foffice.com\u002fwebapps\u0027\u003eOffice Web Apps\u003c\u002fa\u003e.\u003c\u002fiframe\u003e";
+			var UrlPlaceholder = "WACFILEURL";
+
+			var OriginalUrlElementId = "OriginalUrl";
+			var GeneratedViewUrlElementId = "GeneratedViewUrl";
+			var GeneratedEmbedCodeElementId = "GeneratedEmbedCode";
+			var CopyViewUrlLinkId = "CopyViewUrl";
+			var CopyEmbedCodeLinkId = "CopyEmbedCode";
+
+			function OnLoad()
+			{
+				if(window.navigator.userAgent.indexOf(" MSIE ") < 0)
+				{
+
+					document.getElementById(CopyViewUrlLinkId).setAttribute('style', 'display:none;');
+					document.getElementById(CopyEmbedCodeLinkId).setAttribute('style', 'display:none;');
+				}
+			}
+
+			function OnCreateUrl()
+			{
+				var originalUrl = document.getElementById(OriginalUrlElementId).value;
+
+				var generatedViewUrl = ViewUrlMask.replace(UrlPlaceholder, encodeURIComponent(originalUrl));
+				var generatedEmbedCode = EmbedCodeMask.replace(UrlPlaceholder, encodeURIComponent(originalUrl));
+
+				document.getElementById(GeneratedViewUrlElementId).value = generatedViewUrl;
+				document.getElementById(GeneratedEmbedCodeElementId).value = generatedEmbedCode;
+			}
+
+			function CopyToClipboard(elementId)
+			{
+				try
+				{
+					window.clipboardData.setData('text', document.getElementById(elementId).value);
+				}
+				catch (ex) { }
+			}
+
+			function ShowFullPreview()
+			{
+				try
+				{
+					window.open(document.getElementById(GeneratedViewUrlElementId).value, "_blank");
+				}
+				catch (ex) { }
+			}
+		</script>
+	</head>
+	<body onload="OnLoad()"  >
+		<div id="PageContainer">
+			<div id="IconContainer">
+				<img src="icon.png">
+			</div>
+			<div id="ContentContainer">
+				<div class="Header">Provide a link that opens Word, Excel, or PowerPoint files in a web browser.</div>
+				<div>
+					<a href="https://r.office.microsoft.com/r/rlidwacowahelp">Learn more</a>
+				</div>
+				<div>
+					<div class="Subheader">Enter the address of the document (http, https, or \\file\share)</div>
+					<div><input type="text" id="OriginalUrl" /></div>
+					<div><input type="button" onclick="OnCreateUrl();" value="Create Link" /></div>
+					<div id="GeneratedUrlsContainer">
+						<div class="Subheader">Open the document in a browser. <a id="CopyViewUrl" onclick="CopyToClipboard('GeneratedViewUrl');" href="#">Copy to clipboard</a></div>
+						<div><input class="SmallMargin" type="text" id="GeneratedViewUrl" /></div>
+						<div id="TestLinkContainer"><a class="Sublink" onclick="ShowFullPreview();" href="#">Test this link</a></div>
+						<div class="Subheader">Embed the document on a web page. <a id="CopyEmbedCode" onclick="CopyToClipboard('GeneratedEmbedCode');" href="#">Copy to clipboard</a></div>
+						<div><input type="text" id="GeneratedEmbedCode" /></div>
+					</div>
+				</div>
+				<div class="Subheader">You can generate the link yourself</div>
+				To write your own link, use the URL-encoded web address or file path of the document as the src parameter of the URL.&nbsp;For example, for a document located at \\servername\path1\path2\file, write the link or embedding code as follows:
+				<div class="Subheader">Link</div>
+				http://11.2.8.72/op/view.aspx?src=%5C%5Cservername%5Cpath1%5Cpath2%5Cfile
+				<div class="Subheader">Embedding code</div>
+				&lt;iframe src=&#39;http://11.2.8.72/op/embed.aspx?src=%5C%5Cservername%5Cpath1%5Cpath2%5Cfile&#39; width=&#39;476px&#39; height=&#39;288px&#39; frameborder=&#39;0&#39;&gt;This is an embedded &lt;a target=&#39;_blank&#39; href=&#39;http://office.com&#39;&gt;Microsoft Office&lt;/a&gt; document, powered by &lt;a target=&#39;_blank&#39; href=&#39;http://office.com/webapps&#39;&gt;Office Web Apps&lt;/a&gt;.&lt;/iframe&gt;
+			</div>
+		</div>
+	</body>
+</html>
