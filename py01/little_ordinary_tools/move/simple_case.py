@@ -17,7 +17,10 @@ import base_utils
     一个文件
     
     test2
-    本地, 移动到 远程服务器(ssh)
+    远程服务器, 移动到 远程服务器(ssh)
+    
+    test3
+    复杂地址的数据传输
 '''
 
 '''
@@ -59,12 +62,16 @@ class OneFileToLocal(Check):
         self.support_send_methods = {'by_open_file':'localtolocal', 'by_ssh':'remotetoremote'}
         self.sendmethod = sendmethod
 
+        self.ins = None
+
 
     # 执行序列
     # 先改变状态, 再执行具体功能
     def main(self):
         # send src from pathfrom to pathto
         self.status = 0
+        self.sendmethod = self.confirmsendmethod()
+        self.ins = self.createinstancebyclassname()
         if self.check_authority():
             # begin send data
             self.status += 1
@@ -76,7 +83,8 @@ class OneFileToLocal(Check):
 
             # and show result
             self.showresult()
-
+        else:
+            print '不具备权限'
         # pass
         if self.status >= len(self.statuslist)-1:
             return True
@@ -92,7 +100,7 @@ class OneFileToLocal(Check):
         print self.src, os.stat(self.pathfrom+base_utils.OS_path_split()+self.src)
         print self.pathto, os.stat(self.pathto)
 
-        return True
+        return self.ins.check_authority()
 
 
     # by some protocol, send file data.
@@ -101,20 +109,16 @@ class OneFileToLocal(Check):
 
     def senddata(self):
         begin = time.time()
-        with open(self.pathfrom+base_utils.OS_path_split() + self.src, 'rb') as in_file:
-            with open(self.pathto + base_utils.OS_path_split() + self.src, 'wb') as out_file:
-                out_file.write(in_file.read())
+        self.ins.senddata()
         end = time.time()
 
         self.consuming_time = end - begin
 
 
-
-
-
     # 返回传输的结果.
     def showresult(self):
         print self._result
+        self.ins.showresult()
         print '本次数据传输结果: ', self.statuslist[self.status]
         print '耗时: ', self.consuming_time
 
@@ -123,13 +127,20 @@ class OneFileToLocal(Check):
     def confirmsendmethod(self):
         if self.sendmethod in (None, ''):
             # 自动判断传输方式
+            # TODO:
             pass
         else:
             return self.sendmethod
+
+    # 根据类名常见实例, 由于不同类, 需要的参数不一样
+    # 所以在此不传递参数.
+    # 所以子类可以有单独的参数解析函数.
     def createinstancebyclassname(self):
         classname = self.support_send_methods.get(self.sendmethod)
         targetmode=__import__('sendmethods.'+classname)
-        Class_ = getattr(targetmode, classname)
+        Class_ = getattr(targetmode, classname+'.'+classname+'_')
+        print Class_
+        print targetmode
         return Class_()
 
 
@@ -152,7 +163,7 @@ if __name__ == '__main__':
     if not os.path.exists(aim_path):
         os.mkdir(aim_path)
 
-    t = OneFileToLocal(src, src_path, aim_path)
+    t = OneFileToLocal(src, src_path, aim_path, sendmethod='by_open_file')
     t.main()
 
 

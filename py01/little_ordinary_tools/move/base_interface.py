@@ -10,6 +10,8 @@ class IMoveFile():
     def __init__(self):
         pass
 
+    def analysis_params(self, **kwargs):
+        pass
 
     # check authority
     def check_authority(self):
