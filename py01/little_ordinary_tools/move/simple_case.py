@@ -20,9 +20,18 @@ import base_utils
     本地, 移动到 远程服务器(ssh)
 '''
 
+'''
+    
+'''
 
 class OneFileToLocal(Check):
-    def __init__(self, src, pathfrom='', pathto=''):
+    '''
+        src:            源文件
+        
+        pathfrom:       源地址
+        pathto:         目标地址
+    '''
+    def __init__(self, src, pathfrom='', pathto='', sendmethod=None):
 
         # filename to move
         self.src = src
@@ -37,7 +46,7 @@ class OneFileToLocal(Check):
             self.pathto = pathto
 
         # 根据文件传送状态, 逐级增加
-        self.statuslist = [u'未传送',u'正在传送', u'完成传送']
+        self.statuslist = (u'未传送',u'正在传送', u'完成传送')
         self.status = 1
 
         # 表示程序执行的过程, 相关的数据
@@ -45,6 +54,11 @@ class OneFileToLocal(Check):
 
         # time consuming
         self.consuming_time = 0
+
+        # support send data
+        self.support_send_methods = {'by_open_file':'localtolocal', 'by_ssh':'remotetoremote'}
+        self.sendmethod = sendmethod
+
 
     # 执行序列
     # 先改变状态, 再执行具体功能
@@ -103,6 +117,22 @@ class OneFileToLocal(Check):
         print self._result
         print '本次数据传输结果: ', self.statuslist[self.status]
         print '耗时: ', self.consuming_time
+
+
+    # confirm send method
+    def confirmsendmethod(self):
+        if self.sendmethod in (None, ''):
+            # 自动判断传输方式
+            pass
+        else:
+            return self.sendmethod
+    def createinstancebyclassname(self):
+        classname = self.support_send_methods.get(self.sendmethod)
+        targetmode=__import__('sendmethods.'+classname)
+        Class_ = getattr(targetmode, classname)
+        return Class_()
+
+
 
 
 # Little test for the class function is OK.
