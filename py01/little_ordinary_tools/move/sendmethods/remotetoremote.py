@@ -19,8 +19,11 @@ class remotetoremote(base_interface.IMoveFile):
         self.src = ''
         self.pathfrom = ''
         self.pathto = ''
+        self.aim = ''
         # by ssh
         self.sshobj=dict()
+
+        # self.OS_path_split = '/'
 
 
     # 解析到需要的数据
@@ -30,6 +33,7 @@ class remotetoremote(base_interface.IMoveFile):
         self.src = kwargs.get('src')
         self.pathfrom = kwargs.get('pathfrom')
         self.pathto = kwargs.get('pathto')
+        self.aim = kwargs.get('aim')
 
         src_ip = raw_input('src ip: ')
         src_port = raw_input('src ssh port')
@@ -41,14 +45,14 @@ class remotetoremote(base_interface.IMoveFile):
         remote_username = raw_input('remote username: ')
         remote_password = raw_input('remote password: ')
 
-        self.sshobj['src_ip'] = src_ip
-        self.sshobj['src_port'] = src_port
-        self.sshobj['src_username'] = src_username
-        self.sshobj['src_password'] = src_password
-        self.sshobj['remote_ip'] = remote_ip
-        self.sshobj['remote_port'] = remote_port
-        self.sshobj['remote_username'] = remote_username
-        self.sshobj['remote_password'] = remote_password
+        self.sshobj['src_ip'] = src_ip or '210.31.104.123'
+        self.sshobj['src_port'] = src_port or 20021
+        self.sshobj['src_username'] = src_username or 'root'
+        self.sshobj['src_password'] = src_password or 'Horose@1970'
+        self.sshobj['remote_ip'] = remote_ip or '210.31.104.123'
+        self.sshobj['remote_port'] = remote_port or 20021
+        self.sshobj['remote_username'] = remote_username or 'root'
+        self.sshobj['remote_password'] = remote_password or 'Horose@1970'
 
 
 
@@ -56,8 +60,8 @@ class remotetoremote(base_interface.IMoveFile):
     # check authority
     def check_authority(self):
         # return False
-        if self.check_readable(self.pathfrom+base_utils.OS_path_split()+self.src) \
-            and self.check_writeable(self.pathto+base_utils.OS_path_split()+self.src, True):
+        if self.check_readable(self.pathfrom+self.OS_path_split()+self.src) \
+            and self.check_writeable(self.pathto+self.OS_path_split()+self.aim, True):
 
             return True
         return False
@@ -72,15 +76,15 @@ class remotetoremote(base_interface.IMoveFile):
                 port=self.sshobj.get('src_port'),
                 username=self.sshobj.get('src_username'),
                 password=self.sshobj.get('src_password'),
-                exe_cmd='cat '+ self.pathfrom+base_utils.OS_path_split()+self.src
+                exe_cmd='cat '+ self.pathfrom+self.OS_path_split()+self.src
             )
             base_utils.request_by_ssh_from(
                 hostname=self.sshobj.get('src_ip'),
                 port=self.sshobj.get('src_port'),
                 username=self.sshobj.get('src_username'),
                 password=self.sshobj.get('src_password'),
-                exe_cmd='echo '+ filedata + ' >> ' \
-                        + self.pathto+base_utils.OS_path_split()+self.src
+                exe_cmd='echo \''+ filedata + '\' >> ' \
+                        + self.pathto+self.OS_path_split()+self.aim
             )
 
 
@@ -141,3 +145,6 @@ class remotetoremote(base_interface.IMoveFile):
             return True
 
         return False
+
+    def OS_path_split(self):
+        return '/'

@@ -35,7 +35,7 @@ def request_by_ssh_from(**kwargs):
     stdin.write(exe_cmd)
     result = stdout.read()
     print 'out: ', len(result)
-    # print 'err: ', stderr.read()
+    print 'err: ', stderr.read()
 
 
     remote_client.close()

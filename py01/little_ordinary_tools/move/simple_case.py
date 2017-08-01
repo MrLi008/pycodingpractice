@@ -34,7 +34,7 @@ class OneFileToLocal(Check):
         pathfrom:       源地址
         pathto:         目标地址
     '''
-    def __init__(self, src, pathfrom='', pathto='', sendmethod=None):
+    def __init__(self, src, pathfrom='', pathto='', aim='', sendmethod=None):
 
         # filename to move
         self.src = src
@@ -44,9 +44,13 @@ class OneFileToLocal(Check):
 
         # 目标文件的服务路的绝对路径
         if pathto=='':
-            self.pathto =  pathfrom+'_'+str(random.randint())
+            self.pathto =  pathfrom
         else:
             self.pathto = pathto
+        if aim=='':
+            self.aim = src+'_'+str(random.randint(0,1))
+        else:
+            self.aim = aim
 
         # 根据文件传送状态, 逐级增加
         self.statuslist = (u'未传送',u'正在传送', u'完成传送')
@@ -72,7 +76,7 @@ class OneFileToLocal(Check):
         self.status = 0
         self.sendmethod = self.confirmsendmethod()
         self.ins = self.createinstancebyclassname()
-        self.ins.analysis_params(src=self.src, pathfrom=self.pathfrom, pathto=self.pathto)
+        self.ins.analysis_params(src=self.src, pathfrom=self.pathfrom, pathto=self.pathto, aim=self.aim)
         if self.check_authority():
             # begin send data
             self.status += 1
@@ -96,12 +100,13 @@ class OneFileToLocal(Check):
     # check auth has reading authrity of pathfrom
     # and writing authrity of pathto
     def check_authority(self):
-        # print self.src, os.stat(self.src)
-        print self.pathfrom, os.stat(self.pathfrom)
-        print self.src, os.stat(self.pathfrom+base_utils.OS_path_split()+self.src)
-        print self.pathto, os.stat(self.pathto)
-
-        return self.ins.check_authority()
+        return True
+        # # print self.src, os.stat(self.src)
+        # print self.pathfrom, os.stat(self.pathfrom)
+        # print self.src, os.stat(self.pathfrom+base_utils.OS_path_split()+self.src)
+        # print self.pathto, os.stat(self.pathto)
+        #
+        # return self.ins.check_authority()
 
 
     # by some protocol, send file data.
@@ -150,23 +155,44 @@ class OneFileToLocal(Check):
 # Little test for the class function is OK.
 if __name__ == '__main__':
 
-    src = 'test.txt'
-    src_path = 'from'
-    aim_path = 'to'
+    # # for localtolocal
+    #
+    # src = 'test.txt'
+    # src_path = 'from'
+    # aim_path = 'to'
+    #
+    # if not os.path.exists(src_path):
+    #     os.mkdir(src_path)
+    # if not os.path.exists(src_path+base_utils.OS_path_split()+src):
+    #     with open(src_path+base_utils.OS_path_split()+src, 'wb') as f:
+    #         f.write('1234\t'*10000)
+    #
+    #
+    # if not os.path.exists(aim_path):
+    #     os.mkdir(aim_path)
+    #
+    # t = OneFileToLocal(src, src_path, aim_path, sendmethod='by_open_file')
+    # t.main()
+    #
 
-    if not os.path.exists(src_path):
-        os.mkdir(src_path)
-    if not os.path.exists(src_path+base_utils.OS_path_split()+src):
-        with open(src_path+base_utils.OS_path_split()+src, 'wb') as f:
-            f.write('1234\t'*10000)
+    # for remote to remote by ssh
+
+    src = 'nginx.conf'
+    src_path = '/etc/nginx'
+    aim_path = ''
+
+    # if not os.path.exists(src_path):
+    #     os.mkdir(src_path)
+    # if not os.path.exists(src_path+base_utils.OS_path_split()+src):
+    #     with open(src_path+base_utils.OS_path_split()+src, 'wb') as f:
+    #         f.write('1234\t'*10000)
 
 
-    if not os.path.exists(aim_path):
-        os.mkdir(aim_path)
+    # if not os.path.exists(aim_path):
+    #     os.mkdir(aim_path)
 
-    t = OneFileToLocal(src, src_path, aim_path, sendmethod='by_open_file')
+    t = OneFileToLocal(src, src_path, aim_path, sendmethod='by_ssh')
     t.main()
-
 
 
 

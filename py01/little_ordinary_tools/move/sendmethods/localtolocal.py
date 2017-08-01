@@ -22,6 +22,7 @@ class localtolocal(base_interface.IMoveFile):
         self.src = kwargs.get('src')
         self.pathfrom = kwargs.get('pathfrom')
         self.pathto = kwargs.get('pathto')
+        self.aim = kwargs.get('aim')
 
 
 
@@ -29,7 +30,7 @@ class localtolocal(base_interface.IMoveFile):
     def check_authority(self):
         # return False
         if self.check_readable(self.pathfrom+base_utils.OS_path_split()+self.src) \
-            and self.check_writeable(self.pathto+base_utils.OS_path_split()+self.src, True):
+            and self.check_writeable(self.pathto+base_utils.OS_path_split()+self.aim, True):
 
             return True
         return False
@@ -39,7 +40,7 @@ class localtolocal(base_interface.IMoveFile):
     def senddata(self):
         try:
             with open(self.pathfrom+base_utils.OS_path_split() + self.src, 'rb') as in_file:
-                with open(self.pathto + base_utils.OS_path_split() + self.src, 'wb') as out_file:
+                with open(self.pathto + base_utils.OS_path_split() + self.aim, 'wb') as out_file:
                     out_file.write(in_file.read())
         except Exception as e:
             print e, 'in localtolocal, senddata'
