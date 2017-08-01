@@ -72,6 +72,7 @@ class OneFileToLocal(Check):
         self.status = 0
         self.sendmethod = self.confirmsendmethod()
         self.ins = self.createinstancebyclassname()
+        self.ins.analysis_params(src=self.src, pathfrom=self.pathfrom, pathto=self.pathto)
         if self.check_authority():
             # begin send data
             self.status += 1
@@ -137,8 +138,8 @@ class OneFileToLocal(Check):
     # 所以子类可以有单独的参数解析函数.
     def createinstancebyclassname(self):
         classname = self.support_send_methods.get(self.sendmethod)
-        targetmode=__import__('sendmethods.'+classname)
-        Class_ = getattr(targetmode, classname+'.'+classname+'_')
+        targetmode=__import__('sendmethods.'+classname, fromlist=[classname, ])
+        Class_ = getattr(targetmode, classname)
         print Class_
         print targetmode
         return Class_()
@@ -157,7 +158,7 @@ if __name__ == '__main__':
         os.mkdir(src_path)
     if not os.path.exists(src_path+base_utils.OS_path_split()+src):
         with open(src_path+base_utils.OS_path_split()+src, 'wb') as f:
-            f.write('1234')
+            f.write('1234\t'*10000)
 
 
     if not os.path.exists(aim_path):

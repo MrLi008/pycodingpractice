@@ -1,18 +1,26 @@
 # coding=utf8
+# coding=utf8
 
 
 import os
 
 
-
+'''
+整体思路:
+使用ssh登录到远程服务器a, 
+拷到文件数据
+在发送到远程服务器b上
+'''
 
 import base_interface
 import base_utils
-class localtolocal(base_interface.IMoveFile):
+class remotetoremote(base_interface.IMoveFile):
     def __init__(self):
         self.src = ''
         self.pathfrom = ''
         self.pathto = ''
+        # by ssh
+        self.sshobj=dict()
 
 
     # 解析到需要的数据
@@ -22,6 +30,26 @@ class localtolocal(base_interface.IMoveFile):
         self.src = kwargs.get('src')
         self.pathfrom = kwargs.get('pathfrom')
         self.pathto = kwargs.get('pathto')
+
+        src_ip = raw_input('src ip: ')
+        src_port = raw_input('src ssh port')
+        src_username = raw_input('src username: ')
+        src_password = raw_input('src password: ')
+
+        remote_ip = raw_input('remote ip: ')
+        remote_port = raw_input('remote ssh port: ')
+        remote_username = raw_input('remote username: ')
+        remote_password = raw_input('remote password: ')
+
+        self.sshobj['src_ip'] = src_ip
+        self.sshobj['src_port'] = src_port
+        self.sshobj['src_username'] = src_username
+        self.sshobj['src_password'] = src_password
+        self.sshobj['remote_ip'] = remote_ip
+        self.sshobj['remote_port'] = remote_port
+        self.sshobj['remote_username'] = remote_username
+        self.sshobj['remote_password'] = remote_password
+
 
 
 
@@ -38,9 +66,24 @@ class localtolocal(base_interface.IMoveFile):
     # send data
     def senddata(self):
         try:
-            with open(self.pathfrom+base_utils.OS_path_split() + self.src, 'rb') as in_file:
-                with open(self.pathto + base_utils.OS_path_split() + self.src, 'wb') as out_file:
-                    out_file.write(in_file.read())
+            # TODO: send data by ssh
+            filedata = base_utils.request_by_ssh_from(
+                hostname=self.sshobj.get('src_ip'),
+                port=self.sshobj.get('src_port'),
+                username=self.sshobj.get('src_username'),
+                password=self.sshobj.get('src_password'),
+                exe_cmd='cat '+ self.pathfrom+base_utils.OS_path_split()+self.src
+            )
+            base_utils.request_by_ssh_from(
+                hostname=self.sshobj.get('src_ip'),
+                port=self.sshobj.get('src_port'),
+                username=self.sshobj.get('src_username'),
+                password=self.sshobj.get('src_password'),
+                exe_cmd='echo '+ filedata + ' >> ' \
+                        + self.pathto+base_utils.OS_path_split()+self.src
+            )
+
+
         except Exception as e:
             print e, 'in localtolocal, senddata'
     # show result
