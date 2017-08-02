@@ -76,7 +76,10 @@ class OneFileToLocal(Check):
         self.status = 0
         self.sendmethod = self.confirmsendmethod()
         self.ins = self.createinstancebyclassname()
-        self.ins.analysis_params(src=self.src, pathfrom=self.pathfrom, pathto=self.pathto, aim=self.aim)
+        self.ins.analysis_params(src=self.src,
+                                 pathfrom=self.pathfrom,
+                                 pathto=self.pathto,
+                                 aim=self.aim)
         if self.check_authority():
             # begin send data
             self.status += 1
@@ -100,13 +103,13 @@ class OneFileToLocal(Check):
     # check auth has reading authrity of pathfrom
     # and writing authrity of pathto
     def check_authority(self):
-        return True
-        # # print self.src, os.stat(self.src)
-        # print self.pathfrom, os.stat(self.pathfrom)
-        # print self.src, os.stat(self.pathfrom+base_utils.OS_path_split()+self.src)
-        # print self.pathto, os.stat(self.pathto)
-        #
-        # return self.ins.check_authority()
+        # return True
+        # print self.src, os.stat(self.src)
+        print self.pathfrom, os.stat(self.pathfrom)
+        print self.src, os.stat(self.pathfrom+base_utils.OS_path_split()+self.src)
+        print self.pathto, os.stat(self.pathto)
+
+        return self.ins.check_authority()
 
 
     # by some protocol, send file data.
