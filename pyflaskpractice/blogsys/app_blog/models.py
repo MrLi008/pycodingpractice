@@ -146,7 +146,7 @@ class User(UserMixin, db.Model):
 
 
     def __init__(self, **kwargs):
-        super(User, self).__init__(**kwargs)
+        super(User, self).__init__(kwargs)
         if self.role is None:
             if self.email == current_app.config['FLASKY_ADMIN']:
                 self.role = Role.query.filter_by(permissions=0xff).first()
@@ -381,7 +381,13 @@ class Comment(db.Model):
             tags=allowed_tags, strip=True))
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
-
+class BD(db.Model):
+    __tablename__ = 'basedata'
+    id = db.Column(db.Integer, primary_key=True)
+    db_name = db.Column(db.Text, )
+    db_type = db.Column(db.Text)
+    db_default = db.Column(db.Text)
+    db_pri = db.Column(db.Integer)
 
 if __name__ == '__main__':
     db.create_all()

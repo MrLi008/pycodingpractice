@@ -60,6 +60,10 @@ def create_app(config_name):
     from app_blog.auth import auth
     app.register_blueprint(auth, url_prefix='/auth')
 
+    # register managedb
+    from app_blog.managedb import managedb
+    app.register_blueprint(managedb, url_prefix='/managedb')
+
     return app
 
 
