@@ -10,16 +10,12 @@
 <div class="col-md-4">
     {{ wtf.quick_form(form) }}
 </div>
-
+<div>
 <ul>
-    {% for bd in bdlist %}
-    <li>
-        <td>{{ bd.db_name }}</td>
-        <td>{{ bd.db_type }}</td>
-        <td>{{ bd.db_default }}</td>
-        <td>{{ bd.db_pri }}</td>
-
-    </li>
+    {% for k,v in dbdict.items %}
+    <span>k</span>
+    <span>v</span>
     {% endfor %}
 </ul>
+    </div>
 {% endblock %}

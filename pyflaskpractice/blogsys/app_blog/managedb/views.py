@@ -21,5 +21,12 @@ def index():
         db.session.add(basedata)
 
     bdlist = BD.query.all()
+    dbdict = {}
+    for bd in bdlist:
+        if bd.db_pri in dbdict.keys():
+            dbdict[bd.db_pri] = []
 
-    return render_template('managedb/index.html', form=form, bdlist=bdlist)
+        dbdict[bd.bd.db_pri].append(bd)
+
+
+    return render_template('managedb/index.html', form=form, dbdict=dbdict)
