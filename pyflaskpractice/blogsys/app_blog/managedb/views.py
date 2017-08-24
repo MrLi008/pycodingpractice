@@ -5,7 +5,9 @@ from .. import db
 from ..models import Permission, Role, User, Post, Comment, BD
 from ..decorators import admin_required, permission_required
 from . import managedb
+from wtforms.validators import DataRequired
 import forms
+from constructionflaskform import ConstructionFlaskForm
 
 @managedb.route('/', methods=['GET','POST'])
 def index():
@@ -21,13 +23,21 @@ def index():
         db.session.add(basedata)
 
     bdlist = BD.query.all()
-    dbdict = {}
+    dbdict = []
     for bd in bdlist:
-        if bd.db_pri not in dbdict.keys():
-            dbdict[bd.db_pri] = []
 
-        dbdict[bd.db_pri].append(bd)
-        print dbdict[bd.db_pri]
+        params = {
+            str(bd.id): {
+                'type': 'StringField',
+                'name': bd.db_name,
+                'validators': [DataRequired()]
+            }
+        }
+        cf = ConstructionFlaskForm(params=params)
+        # print cf
+        # print cf.MyFlaskForm.__dict__
+        newform = cf.convertdicttowtfform()()
+        dbdict.append(newform)
 
 
 

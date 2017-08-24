@@ -7,21 +7,13 @@
     <h1>Configer</h1>
 </dic>
 
-<div class="col-md-4">
+<div>
     {{ wtf.quick_form(form) }}
 </div>
 <div>
 <ul>
-    {% for k,v in dbdict.items() %}
-    <ul>
-    <tr>{{ k }}-----</tr>
-        <ul>
-        {% for data in v %}
-        <td>{{ data.db_name }}</td>
-        <input type="text" placeholder="{{ data.db_default }}"/><br/>
-        {% endfor %}
-        </ul>
-    </ul>
+    {% for f in dbdict %}
+        {{ wtf.quick_form(f) }}
     {% endfor %}
 </ul>
     </div>
