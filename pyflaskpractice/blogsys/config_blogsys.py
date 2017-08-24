@@ -22,6 +22,8 @@ class ConfigBlogSys:
 
     FLASKY_COMMENTS_PER_PAGE = 3
 
+    # DEBUG = True
+
     @staticmethod
     def init_app(app):
         print 'This is in init_app', app

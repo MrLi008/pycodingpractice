@@ -12,9 +12,16 @@
 </div>
 <div>
 <ul>
-    {% for k,v in dbdict.items %}
-    <span>k</span>
-    <span>v</span>
+    {% for k,v in dbdict.items() %}
+    <ul>
+    <tr>{{ k }}-----</tr>
+        <ul>
+        {% for data in v %}
+        <td>{{ data.db_name }}</td>
+        <input type="text" placeholder="{{ data.db_default }}"/><br/>
+        {% endfor %}
+        </ul>
+    </ul>
     {% endfor %}
 </ul>
     </div>

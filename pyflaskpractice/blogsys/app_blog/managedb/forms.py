@@ -13,6 +13,6 @@ class BaseData(FlaskForm):
     db_default = StringField('default_value', validators=[DataRequired()])
 
     db_pri = IntegerField('privilage', validators=[DataRequired()])
-
+    db_pre = StringField('pre node', validators=[DataRequired()])
 
     submit = SubmitField('Submit')

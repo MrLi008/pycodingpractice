@@ -23,10 +23,12 @@ def index():
     bdlist = BD.query.all()
     dbdict = {}
     for bd in bdlist:
-        if bd.db_pri in dbdict.keys():
+        if bd.db_pri not in dbdict.keys():
             dbdict[bd.db_pri] = []
 
-        dbdict[bd.bd.db_pri].append(bd)
+        dbdict[bd.db_pri].append(bd)
+        print dbdict[bd.db_pri]
+
 
 
     return render_template('managedb/index.html', form=form, dbdict=dbdict)

@@ -388,6 +388,16 @@ class BD(db.Model):
     db_type = db.Column(db.Text)
     db_default = db.Column(db.Text)
     db_pri = db.Column(db.Integer)
+    # db_pre = db.relationship('BD', backref='db_pre_id')
+    db_pre_id = db.Column(db.Integer, db.ForeignKey('basedata.id'))
+    db_pres = db.relationship('BD', backref='db_pre', remote_side='BD.id')
 
+    # db_sub = db.relationship('BD', back_populates='db_subs')
+    # db_subs = db.relationship('BD', back_populates='db_pre')
+
+    # def __repr__(self):
+    #     print '{0}-{1}-{2}-{3}-{4}\n'.format(
+    #         self.id, self.db_name, self.db_type, self.db_default, self.db_pri)
+            # str(self.db_pre_id), self.db_pres)
 if __name__ == '__main__':
     db.create_all()
