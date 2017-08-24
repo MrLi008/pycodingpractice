@@ -22,23 +22,7 @@ def index():
         )
         db.session.add(basedata)
 
-    bdlist = BD.query.all()
-    dbdict = []
-    for bd in bdlist:
-
-        params = {
-            str(bd.id): {
-                'type': 'StringField',
-                'name': bd.db_name,
-                'validators': [DataRequired()]
-            }
-        }
-        cf = ConstructionFlaskForm(params=params)
-        # print cf
-        # print cf.MyFlaskForm.__dict__
-        newform = cf.convertdicttowtfform()()
-        dbdict.append(newform)
 
 
 
-    return render_template('managedb/index.html', form=form, dbdict=dbdict)
+    return render_template('managedb/index.html', form=form)
