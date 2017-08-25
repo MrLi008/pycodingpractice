@@ -26,3 +26,22 @@ def index():
 
 
     return render_template('managedb/index.html', form=form)
+
+@managedb.route('/<id>', methods=['POST', 'GET'])
+def release(id):
+    ins = BD.query.get_or_404(id)
+
+
+    return render_template('managedb/release.html', ins=ins)
+
+
+
+@managedb.route('/all', )
+def alldata():
+    al = BD.query.all()
+    print 'length of al: ', len(al)
+
+    for a in al:
+        print a.id
+
+    return 'all data'

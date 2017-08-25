@@ -23,7 +23,6 @@ class WtfFormTestCase(unittest.TestCase):
         newform = cf.convertdicttowtfform()
         print cf
         print newform.__dict__
-        # print cf.MyFlaskForm.__dict__
         self.assertTrue(True)
 
     def test_init2(self):
