@@ -132,7 +132,7 @@ def setWordToPDF(pdfcanvas, left, top, text):
     # init
     # pdfcanvas.line(0,2,1*cm,2*cm)
     px = float(21)/2250
-    py = float(30)/3000
+    py = float(30)/2700
     print left,left*cm*px,top,(30-top*py)*cm,cm
     pdfcanvas.drawString(left*cm*px, (30-top*py)*cm, text)
     # pdfcanvas.drawString(left/10,top/7,text)
@@ -170,7 +170,9 @@ def getpdffromimg(imgfile):
 if __name__ == '__main__':
     # getimgfilefrompdf(pdffile)
     # pass
-    imgfile = 'imgfile/test2.jpg'
+    # imgfile = 'imgfile/test2.jpg'
+    # imgfile = 'imgfile/22.JPG'
+    imgfile = 'imgfile/33.jpg'
     getpdffromimg(imgfile)
 
 
