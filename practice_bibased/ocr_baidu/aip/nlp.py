@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from base import *
+import re
+import sys
+from .base import AipBase
+from .base import base64
+from .base import json
+from .base import urlencode
+from .base import quote
+from .base import Image
+from .base import StringIO
 
 class AipNlp(AipBase):
     """
@@ -8,102 +16,171 @@ class AipNlp(AipBase):
     """
 
     __wordsegUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/wordseg'
-    
+
     __wordposUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/wordpos'
-    
-    __wordembeddingUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/wordembedding'
-    
-    __dnnlmUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/dnnlm_cn'
-    
-    __simnetUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/simnet'
-    
-    __commentTagUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/comment_tag'
+
+    __wordEmbeddingUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_vec'
+
+    __wordSimEmbeddingUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_sim'
+
+    __dnnlmUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/dnnlm_cn'
+
+    __simnetUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet'
+
+    __commentTagUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/comment_tag'
+
+    __lexerUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer'
+
+    __sentimentClassifyUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify'
+
+    __depParserUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/depparser'
+
 
     def _proccessResult(self, content):
         """
             formate result
         """
         
-        return json.loads(content.decode('gbk', 'ignore').encode('utf8')) or {}
+        if sys.version_info.major == 2:
+            return json.loads(content.decode('gbk', 'ignore').encode('utf8')) or {}
+        else:
+            return json.loads(str(content, 'gbk')) or {}
+
+    def _proccessRequest(self, url, params, data, headers):
+        """
+            _proccessRequest
+        """
+
+        if sys.version_info.major == 2:
+            return json.dumps(data, ensure_ascii=False).decode('utf8').encode('gbk')
+        else:
+            return json.dumps(data, ensure_ascii=False).encode('gbk')
     
-    def wordseg(self, query):
+    def wordseg(self, query, options=None):
         """
             Aip wordseg
         """
 
         data = {}
-        data['query'] = query.decode('utf8').encode('gbk', 'ignore')
+        data['query'] = query
 
-        return self._request(self.__wordsegUrl, json.dumps(data, ensure_ascii=False))
+        options = options or {}
+        data = dict(data, **options)
 
-    def wordpos(self, query):
+        return self._request(self.__wordsegUrl, data)
+
+    def wordpos(self, query, options=None):
         """
             Aip wordpos
         """
 
         data = {}
-        data['query'] = query.decode('utf8').encode('gbk', 'ignore')
+        data['query'] = query
 
-        return self._request(self.__wordposUrl, json.dumps(data, ensure_ascii=False))
+        options = options or {}
+        data = dict(data, **options)
 
-    def wordembedding(self, query1, query2=''):
+        return self._request(self.__wordposUrl, data)
+
+    def wordEmbedding(self, word, options=None):
         """
-            Aip wordembedding
+            Aip wordEmbedding
         """
 
         data = {}
-        data['query1'] = query1.decode('utf8').encode('gbk', 'ignore')
+        data['word'] = word
 
-        if query2:
-            data['query2'] = query2.decode('utf8').encode('gbk', 'ignore')
-            data['tid'] = 1
-        else:
-            data['tid'] = 2
+        options = options or {}
+        data = dict(data, **options)
 
-        return self._request(self.__wordembeddingUrl, json.dumps(data, ensure_ascii=False))
+        return self._request(self.__wordEmbeddingUrl, data)
 
-    def dnnlm(self, query):
+    def wordSimEmbedding(self, word1, word2, options=None):
+        """
+            Aip wordSimEmbedding
+        """
+
+        data = {}
+        data['word_1'] = word1
+        data['word_2'] = word2
+
+        options = options or {}
+        data = dict(data, **options)
+
+        return self._request(self.__wordSimEmbeddingUrl, data)
+
+    def dnnlm(self, text, options=None):
         """
             Aip dnnlm
         """
 
         data = {}
-        data['input_sequence'] = query.decode('utf8').encode('gbk', 'ignore')
+        data['text'] = text
 
-        return self._request(self.__dnnlmUrl, json.dumps(data, ensure_ascii=False))
+        options = options or {}
+        data = dict(data, **options)
 
-    def simnet(self, query1, query2, options=None):
+        return self._request(self.__dnnlmUrl, data)
+
+    def simnet(self, text1, text2, options=None):
         """
             Aip simnet
         """
 
-        options = options or {}
         data = {}
-        data['input'] = {
-            'qslots':[{
-                'terms_sequence': query1.decode('utf8').encode('gbk', 'ignore'),
-                'type': 0,
-                'items': [],
-            }],
-            'tslots':[{
-                'terms_sequence': query2.decode('utf8').encode('gbk', 'ignore'),
-                'type': 0,
-                'items': [],
-            }],
-            'type': options.get('type', 0),
-        }
+        data['text_1'] = text1 
+        data['text_2'] = text2 
 
-        return self._request(self.__simnetUrl, json.dumps(data, ensure_ascii=False))
+        options = options or {}
+        data = dict(data, **options)
 
-    def commentTag(self, comment, options=None):
+        return self._request(self.__simnetUrl, data)
+
+    def commentTag(self, text, options=None):
         """
             Aip commentTag
         """
 
-        options = options or {}
         data = {}
-        data['comment'] = comment.decode('utf8').encode('gbk', 'ignore')
-        data['type'] = str(options.get('type', '4'))
-        data['entity'] = options.get('entity', 'NULL')
+        data['text'] = text
 
-        return self._request(self.__commentTagUrl, json.dumps(data, ensure_ascii=False))
+        options = options or {}
+        data = dict(data, **options)
+
+        return self._request(self.__commentTagUrl, data)
+
+    def lexer(self, text):
+        """
+            Aip lexer
+        """
+
+        data = {}
+        data['text'] = text
+
+        return self._request(self.__lexerUrl, data)
+
+    def sentimentClassify(self, text, options=None):
+        """
+            Aip sentimentClassify
+        """
+
+        data = {}
+        data['text'] = text
+
+        options = options or {}
+        data = dict(data, **options)
+
+        return self._request(self.__sentimentClassifyUrl, data)
+
+    def depParser(self, text, options=None):
+        """
+            Aip depParser
+        """
+
+        data = {}
+        data['text'] = text
+
+        options = options or {}
+        data = dict(data, **options)
+
+        return self._request(self.__depParserUrl, data)

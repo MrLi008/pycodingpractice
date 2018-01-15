@@ -22,9 +22,7 @@ def index():
         )
         db.session.add(basedata)
 
-
-
-
+        return redirect(url_for('managedb.index'))
     return render_template('managedb/index.html', form=form)
 
 @managedb.route('/<id>', methods=['POST', 'GET'])
@@ -45,3 +43,5 @@ def alldata():
         print a.id
 
     return 'all data'
+
+

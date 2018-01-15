@@ -6,36 +6,35 @@
 import hmac
 import json
 import hashlib
-import http
 import datetime
 import base64
 import time
-from urllib import urlencode
-from urllib import quote
-from urlparse import urlparse
+import sys
+import requests
+from PIL import Image
+from requests import session
+requests.packages.urllib3.disable_warnings()
 
-class AipBase:
+
+if sys.version_info.major == 2:
+    from urllib import urlencode
+    from urllib import quote
+    from urlparse import urlparse
+    from StringIO import StringIO
+else:
+    from urllib.parse import urlencode
+    from urllib.parse import quote
+    from urllib.parse import urlparse
+    from io import BytesIO as StringIO
+
+class AipBase(object):
     """
         AipBase
     """
 
     __accessTokenUrl = 'https://aip.baidubce.com/oauth/2.0/token'
 
-    __scopes = set([
-        'vis-ocr_ocr',
-        'vis-ocr_bankcard',
-        'vis-faceattribute_faceattribute',
-        'nlp_wordseg',
-        'nlp_simnet',
-        'nlp_wordemb',
-        'nlp_comtag',
-        'nlp_wordpos',
-        'nlp_dnnlm_cn',
-        'vis-antiporn_antiporn_v2',
-        'audio_voice_assistant_get',
-        'audio_tts_post',
-        'vis-faceverify_faceverify',
-    ])
+    __scope = 'brain_all_scope'
 
     def __init__(self, appId, apiKey, secretKey):
         """
@@ -47,42 +46,102 @@ class AipBase:
         self._secretKey = secretKey.strip()
         self._authObj = {}
         self._isCloudUser = None
+        self.__client = session()
+        self.__connectTimeout = 60.0
+        self.__socketTimeout = 60.0
+        self.__version = '1_6_4'
 
-    def _request(self, url, data):
+    def getVersion(self):
+        """
+            version
+        """
+        return self.__version
+
+    def setConnectionTimeoutInMillis(self, ms):
+        """
+            setConnectionTimeoutInMillis
+        """
+
+        self.__connectTimeout = ms / 1000.0
+
+    def setSocketTimeoutInMillis(self, ms):
+        """
+            setSocketTimeoutInMillis
+        """
+
+        self.__socketTimeout = ms / 1000.0
+
+    def _request(self, url, data, headers=None):
         """
             self._request('', {})
         """
+        try:
+            result = self._validate(url, data)
+            if result != True:
+                return result
 
-        authObj = self._auth()
-        headers = self._getAuthHeaders('POST', url)
-        params = self._getParams(authObj)
+            authObj = self._auth()
+            params = self._getParams(authObj)            
 
-        response = http.post(url, data=data, params=params, headers=headers)
-        obj = self._proccessResult(response)
+            data = self._proccessRequest(url, params, data, headers)
+            headers = self._getAuthHeaders('POST', url, params, headers)
+            response = self.__client.post(url, data=data, params=params, 
+                            headers=headers, verify=False, timeout=(
+                                self.__connectTimeout,
+                                self.__socketTimeout,
+                            )
+                        )
+            obj = self._proccessResult(response.content)
 
-        if not self._isCloudUser and obj.get('error_code', '') == 110:
-            authObj = self._auth(True)
-            params = self._getParams(authObj)
-            response = http.post(url, data=data, params=params, headers=headers)
-            obj = self._proccessResult(response)
-
+            if not self._isCloudUser and obj.get('error_code', '') == 110:
+                authObj = self._auth(True)
+                params = self._getParams(authObj)
+                response = self.__client.post(url, data=data, params=params, 
+                                headers=headers, verify=False, timeout=(
+                                    self.__connectTimeout,
+                                    self.__socketTimeout,
+                                )
+                            )
+                obj = self._proccessResult(response.content)
+        except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectTimeout) as e:
+            return {
+                'error_code': 'SDK108',
+                'error_msg': 'connection or read data timeout',
+            }
+ 
         return obj
+
+    def _validate(self, url, data):
+        """
+            validate
+        """
+
+        return True
+
+    def _proccessRequest(self, url, params, data, headers):
+        """
+            参数处理
+        """
+
+        params['aipSdk'] = 'python'
+        params['aipVersion'] = self.__version 
+
+        return data
 
     def _proccessResult(self, content):
         """
             formate result
         """
 
-        return json.loads(content) or {}
+        if sys.version_info.major == 2:
+            return json.loads(content) or {}
+        else:
+            return json.loads(content.decode()) or {}
 
     def _auth(self, refresh=False):
         """
             api access auth
         """
-        
-        if len(self._apiKey) == 32 or self._isCloudUser == True:
-            self._isCloudUser = True
-            return
 
         #未过期
         if not refresh:
@@ -90,11 +149,14 @@ class AipBase:
             if tm > int(time.time()):
                 return self._authObj
 
-        obj = json.loads(http.get(self.__accessTokenUrl, params={
+        obj = self.__client.get(self.__accessTokenUrl, verify=False, params={
             'grant_type': 'client_credentials',
             'client_id': self._apiKey,
             'client_secret': self._secretKey,
-        }))
+        }, timeout=(
+            self.__connectTimeout,
+            self.__socketTimeout,
+        )).json()
 
         self._isCloudUser = not self._isPermission(obj)
         obj['time'] = int(time.time())
@@ -107,13 +169,9 @@ class AipBase:
             check whether permission
         """
 
-        scopes = authObj.get('scope', False) 
-        if scopes == False:
-            return False
+        scopes = authObj.get('scope', '') 
 
-        intersection = self.__scopes.intersection(set(scopes.split(' ')))
-
-        return not not intersection
+        return self.__scope in scopes.split(' ')
 
     def _getParams(self, authObj):
         """
@@ -127,40 +185,71 @@ class AipBase:
 
         return params
 
-    def _getAuthHeaders(self, method, url):
+    def _getAuthHeaders(self, method, url, params=None, headers=None):
         """
             api request http headers
         """
+
+        headers = headers or {}
+        params = params or {}
+
         if self._isCloudUser == False:
-            return {}
+            return headers
+
+        urlResult = urlparse(url)
+        for kv in urlResult.query.strip().split('&'):
+            if kv:
+                k, v = kv.split('=')
+                params[k] = v
 
         # UTC timestamp
         timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-        urlResult = urlparse(url)
-        host = urlResult.hostname
-        path = urlResult.path
-        version, expire, signatureHeaders = '1', '1800', 'host'
+        headers['Host'] = urlResult.hostname
+        headers['x-bce-date'] = timestamp
+        version, expire = '1', '1800'
 
         # 1 Generate SigningKey
         val = "bce-auth-v%s/%s/%s/%s" % (version, self._apiKey, timestamp, expire)
-        signingKey = hmac.new(self._secretKey, val, hashlib.sha256).hexdigest().encode('utf-8')
+        signingKey = hmac.new(self._secretKey.encode('utf-8'), val.encode('utf-8'),
+            hashlib.sha256
+        ).hexdigest()
 
         # 2 Generate CanonicalRequest
         # 2.1 Genrate CanonicalURI
-        canonicalUri = quote(path)
+        canonicalUri = quote(urlResult.path)
         # 2.2 Generate CanonicalURI: not used here
         # 2.3 Generate CanonicalHeaders: only include host here
-        canonicalHeaders = 'host:%s' % quote(host).strip()
+        
+        canonicalHeaders = []
+        for header, val in headers.items():
+            canonicalHeaders.append(
+                '%s:%s' % (
+                    quote(header.strip(), '').lower(), 
+                    quote(val.strip(), '')
+                )
+            )
+        canonicalHeaders = '\n'.join(sorted(canonicalHeaders))
+
         # 2.4 Generate CanonicalRequest
-        canonicalRequest = '%s\n%s\n\n%s' % (method.upper(), canonicalUri, canonicalHeaders)
+        canonicalRequest = '%s\n%s\n%s\n%s' % (
+            method.upper(),
+            canonicalUri,
+            urlencode(params),
+            canonicalHeaders
+        )
 
         # 3 Generate Final Signature 
-        signature = hmac.new(signingKey, canonicalRequest, hashlib.sha256).hexdigest()
-        authorization = 'bce-auth-v%s/%s/%s/%s/%s/%s' % (version, self._apiKey, timestamp, expire, signatureHeaders, signature)
+        signature = hmac.new(signingKey.encode('utf-8'), canonicalRequest.encode('utf-8'),
+                        hashlib.sha256
+                    ).hexdigest()
 
-        return {
-            'Host': host,
-            'x-bce-date': timestamp,
-            'accept': '*/*',
-            'authorization': authorization,
-        }
+        headers['authorization'] = 'bce-auth-v%s/%s/%s/%s/%s/%s' % (
+            version,
+            self._apiKey,
+            timestamp,
+            expire, 
+            ';'.join(headers.keys()).lower(),
+            signature
+        )
+
+        return headers
