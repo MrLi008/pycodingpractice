@@ -24,7 +24,7 @@ options = {
 
 import time
 start = time.time()
-# result = aipOcr.general(open(u'D:/anguan/5555/image00002.JPG', 'rb').read(), options)
+result = aipOcr.accurate(open(u'D:/anguan/5555/image00002.JPG', 'rb').read(), options)
 end = time.time()-start
 
 # print end
@@ -43,7 +43,7 @@ def getimgfilefrompdf(pdffile):
 
     # init image
     img = PythonMagick.Image()
-    for page in range(pagenums):
+    for page in range(pagenums-1):
         img.read(pdffile+('[%s]'%page))
         # img.read(f.getPage(page))
         # img = Image.open(pdffile+'['+str(page)+']')
