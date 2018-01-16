@@ -53,7 +53,7 @@ colors = {0:'blue', 1:'black', 2:'yellow',3:'pink',4:'gray',5:'red',6:'green', 7
 colors_all = [list() for i in range(g.vcount())]
 # Community Detection
 clusters = IGraph.community_walktrap(g, weights='weight').as_clustering()
-nodes = [{'name':node['name']} for node in g.vs]
+nodes = [{'name':name} for name in g.vs['name']]
 community = dict()
 
 for node in nodes:
@@ -63,6 +63,7 @@ for node in nodes:
         community[node['community']] = [(node['name'], idx)]
     else:
         community[node['community']].append((node['name'], idx))
+
 for c, l in community.iteritems():
     print c, ':', l
     for name, idx in l:

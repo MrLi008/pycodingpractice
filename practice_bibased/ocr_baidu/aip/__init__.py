@@ -3,7 +3,9 @@
     aip public
 """
 
-from ocr import AipOcr
-from nlp import AipNlp
-from face import AipFace
-from antiporn import AipAntiPorn
+from .ocr import AipOcr
+from .nlp import AipNlp
+from .face import AipFace
+from .imagecensor import AipImageCensor
+from .kg import AipKg
+from .speech import AipSpeech

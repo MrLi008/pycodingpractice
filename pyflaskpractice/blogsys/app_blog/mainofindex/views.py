@@ -245,3 +245,9 @@ def moderate_disable(id):
     db.session.add(comment)
     return redirect(url_for('.moderate',
                             page=request.args.get('page', 1, type=int)))
+
+
+# test for spider
+@mainofindex.route('/robots.txt')
+def robots():
+    return 'in robots.txt, I don\'t tell you what happend.<text>123456<text>'
