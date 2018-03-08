@@ -31,7 +31,7 @@ def unconfirmed():
 def login():
     form = LoginForm()
     db.create_all()
-    print User.query.all()
+    # print User.query.all()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):

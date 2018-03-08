@@ -4,7 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/pyflaskpractice/blogsys" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 2.7.9 (C:\Program Files\python2\python.exe)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 2.7.13 (D:\software\devtools\python\pycharm\pycharm_professional\pycharmpro2017\env\envconda\python.exe)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="py01" />
   </component>
