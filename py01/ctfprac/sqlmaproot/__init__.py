@@ -4,6 +4,8 @@
     :date  
     :funcname
 '''
+import sqlmap
+
 
 if __name__ == '__main__':
     pass
