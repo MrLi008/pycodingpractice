@@ -61,6 +61,9 @@ def register():
     # print db
 
     if form.validate_on_submit():
+        print (form.email.data)
+        print (form.username.data)
+        print (form.password.data)
 
         user = User(email=form.email.data,
                     username=form.username.data,
